@@ -1,0 +1,24 @@
+{
+  "name": "tic_tac_toe",
+  "version": "0.0.1",
+  "description": "Tic Tac Toe for TOP Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martink-rsa/tic_tac_toe.git"
+  },
+  "author": "martink-rsa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martink-rsa/tic_tac_toe/issues"
+  },
+  "homepage": "https://github.com/martink-rsa/tic_tac_toe#readme",
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  }
+}
