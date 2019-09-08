@@ -1,0 +1,36 @@
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+.document-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.tictactoe-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  height: auto;
+  width: auto;
+  background: black;
+}
+
+
+
+.mark-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100px;
+  background: white;
+  border: 0px solid black;
+}
