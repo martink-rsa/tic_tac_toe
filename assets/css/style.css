@@ -8,6 +8,7 @@ html, body {
   height: 100%;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -33,4 +34,29 @@ html, body {
   width: 100px;
   background: white;
   border: 0px solid black;
+}
+
+.game-btns-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.btn-game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  background: mediumaquamarine;
+  width: 80px;
+  height: 30px;
+  text-align: center;
+  border: 1px rgba(0,0,0,0.1) solid;
+  border-radius: 5px;
+
+  transition: background-color .5s ease-in;
+}
+
+.btn-game:hover {
+  background: rgb(111, 238, 195);
+  transition: background-color 0.1s ease-in;
 }
