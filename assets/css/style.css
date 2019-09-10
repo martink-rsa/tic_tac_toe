@@ -1,25 +1,22 @@
 
 :root {
+  --document-bg: rgb(31, 31, 31); /*rgba(31, 31, 31);*/
+  --board-color-mainbg: rgb(31, 31, 31); /*rgba(31, 31, 31);*/
+  --board-color-gridlines: rgb(146, 146, 146);
   --player-one-colour: rgb(247, 21, 247);
   --player-two-colour: rgb(49, 214, 255);
+  --color-bg: rgb(31, 31, 31);
+  --color-accent-1: rgb(102, 102, 102);
+  --color-accent-1-light: rgb(247, 21, 247);
+  --color-font-player: rgb(247, 21, 247);
 }
-
-:host(.nought-show) {
-  {
-    stroke-dashoffset: 0;
-  }
-}
-
-.symbol { 
-  position: absolute;
-  
-
- }
 
 html, body {
   width: 100%;
   height: 100%;
-  color: rgb(54, 54, 54);
+  color: rgb(224, 224, 224);
+  font-family: 'Lexend Tera', sans-serif;
+  font-size: 16px;
 }
 
 .document-wrapper {
@@ -29,18 +26,145 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgb(31, 31, 31);
+  background: var(--color-bg);
+}
 
+.game-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  /*background: pink;*/
+  height: auto;
+  width: auto;
+  max-width: 320px;
+
+}
+
+.game-main-container {
+  display: flex;
+  flex-direction: column;
+  background: yellow;
+  height: 100%;
+  width: 100%;
+}
+
+.game-board-container {
+  position: relative;
+}
+
+/* Game Over */
+.game-over-container {
+  /*display: flex;
+  flex-direction: column;*/
+  z-index: 4000;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgb(66, 66, 66);
+  transition: opacity 1s;
+  opacity: 0;
+}
+
+.show-container {
+  opacity: 1;
+}
+
+.game-over-mark-container {
+  display: flex;
+  justify-content: center;
+  background: orange;
+  height: auto;
+}
+
+.game-over-mark {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  background: lightslategray;
+}
+
+.game-over-text {
+  width: 100%;
+}
+
+.winner-player-text {
+  font-size: 2rem;
+}
+
+/* Current player playing */
+.current-player-display-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 60px;
+}
+
+.current-player-text {
+  font-size: 2rem;
+}
+
+/* Tic-Tac-Toe grid */
+
+.tictactoe-grid {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 1;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.grid-line {
+  stroke: darkgrey;
+  stroke-width: 10px;
+  stroke-linecap: round;
+  stroke-dashoffset: -310;
+  stroke-dasharray: 310;
+  transition: all 2s;
+}
+
+/* ADD CLASS IN RUN-TIME TO SHOW AND ANIMATE GRID.
+      ADDED THEM IN MANUALLY FOR NOW 
+*/
+.grid-line-row-show {
+  stroke-dashoffset: 0;
+  stroke-dasharray: 310;
+}
+
+.grid-line-row1-delay {
+  transition-delay: 0s;
+}
+
+.grid-line-row2-delay {
+  transition-delay: .5s;
+}
+
+.grid-line-column1-delay {
+  transition-delay: .3s;
+}
+
+.grid-line-column2-delay {
+  transition-delay: .7s;
 }
 
 .tictactoe-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
+  justify-items: center;
   grid-gap: 10px;
-  height: auto;
-  width: auto;
-  background: rgb(146, 146, 146);
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+}
+
+.game-over-mark-transform {
+  transition: 1s all;
+
 }
 
 .mark-container {
@@ -49,8 +173,8 @@ html, body {
   align-items: center;
   height: 100px;
   width: 100px;
-  background: rgb(31, 31, 31);
-  border: 0px solid black;
+  background: var(--color-bg);
+  
 }
 
 .game-btns-container {
@@ -63,18 +187,24 @@ html, body {
   justify-content: center;
   align-items: center;
   margin: 5px;
-  background: mediumaquamarine;
+  opacity: 0.5;
   width: 80px;
   height: 30px;
   text-align: center;
-  border: 1px rgba(0,0,0,0.1) solid;
-  border-radius: 5px;
-  transition: background-color .5s ease-in;
+  border: 3px solid var(--color-accent-1-light);
+  border-radius: 15px;
+  transition: all .5s;
+  color: var(--color-font-player);
+  padding: 0 15px;
+  margin: 0 auto;
 }
 
 .btn-game:hover {
-  background: rgb(111, 238, 195);
-  transition: background-color 0.1s ease-in;
+
+  transition: all 0.3s;
+  opacity: 1;
+
+  color: var(--color-font-player);
 }
 
 .test-area {
@@ -91,14 +221,75 @@ html, body {
   stroke: var(--player-one-colour);
 }
 
-.player-one-glow {
-  -webkit-box-shadow: 0px -1px 24px 12px rgba(247,25,247,1);
-  -moz-box-shadow: 0px -1px 24px 12px rgba(247,25,247,1);
-  box-shadow: 0px -1px 24px 12px rgba(247,25,247,1);
+.player-one-fill {
+  fill: var(--player-one-colour);
 }
 
 .player-two {
   stroke:var(--player-two-colour);
+}
+
+.player-two-fill {
+  fill:var(--player-two-colour);
+}
+
+/* O */
+.nought {
+  stroke-width: 10;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dashoffset: 190;
+  stroke-dasharray: 190;
+  -webkit-transition: stroke-dashoffset 1s;
+  -moz-transition: stroke-dashoffset 1s;
+  -o-transition: stroke-dashoffset 1s;
+  transition: stroke-dashoffset 1s;
+}
+
+.nought2 {
+  stroke-width: 10;
+  stroke-linecap: round;
+
+
+}
+
+@keyframes nought-animation {
+  0% {
+    stroke-dashoffset: 190;
+  }
+  
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.mark-nought {
+  /*animation: 1.4s ease-in-out infinite both nought-animation;*/
+  display: block;
+  fill: transparent;
+  stroke-linecap: round;
+  stroke-dasharray: 190;
+  stroke-dashoffset: 0;
+  stroke-width: 10px;
+}
+
+.mark-nought-animate {
+  animation-name: nought-animation;
+  animation-duration: 1.2s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+}
+
+.nought-show  {
+  stroke-dashoffset: 0;
+  stroke-dasharray: 190;
+}
+
+.nought-hide  {
+  stroke-dashoffset: 190;
+  stroke-dasharray: 190;
 }
 
 /* X */
@@ -117,30 +308,6 @@ html, body {
 .cross-show {
   stroke-dashoffset: 0;
 }
-
-/* O */
-.nought {
-  stroke-width: 10;
-  stroke-linecap: round;
-  fill: none;
-  stroke-dashoffset: 190;
-  stroke-dasharray: 190;
-  -webkit-transition: stroke-dashoffset 1s;
-  -moz-transition: stroke-dashoffset 1s;
-  -o-transition: stroke-dashoffset 1s;
-  transition: stroke-dashoffset 1s;
-}
-
-.nought-show  {
-  stroke-dashoffset: 0;
-  stroke-dasharray: 190;
-}
-
-.nought-hide  {
-  stroke-dashoffset: 190;
-  stroke-dasharray: 190;
-}
-
 
 .svg-mark {
   pointer-events: none;

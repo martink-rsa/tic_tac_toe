@@ -6,122 +6,150 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="assets/css/normalize.css">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Lexend+Tera&display=swap" rel="stylesheet">
   <title>Tic-Tac-Toe</title>
 </head>
 <body>
-  <!--
-  <svg class="symbol">
-    <symbol id="symbol-nought" class="player-one" height="100" width="100" viewBox="0 0 100 100">
-      <g>
-        <defs>
-          <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="4 4" result="glow1"/>
-            <feMerge>
-              <feMergeNode in="glow1"/>
-              <feMergeNode in="glow1"/>
-              <feMergeNode in="glow1"/>
-            </feMerge>
-          </filter>
-        </defs>
-        <circle style="filter: url(#glow1); opacity: 0.75;" class="nought nought-show" cx="50" cy="50" r="30"/>
-        <circle class="nought nought-show" cx="50" cy="50" r="30"/>
-      </g>
-    <symbol>
-  </svg>
-  <svg class="symbol">
-    <symbol id="symbol-cross" class="player-two" height="100" width="100" viewBox="0 0 100 100">
-      <g>
-        <defs>
-          <filter id="glow2" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="4 4" result="glow2"/>
-            <feMerge>
-              <feMergeNode in="glow2"/>
-              <feMergeNode in="glow2"/>
-              <feMergeNode in="glow2"/>
-            </feMerge>
-          </filter>
-        </defs>
-        <line style="filter: url(#glow); opacity: 0.75;" class="cross cross-show" x1="20" y1="20" x2="80" y2="80"/>
-        <line style="filter: url(#glow);" class="cross cross-delay cross-show" x1="80" y1="20" x2="20" y2="80"/>
-        <line class="cross cross-show" x1="20" y1="20" x2="80" y2="80"  />
-        <line class="cross cross-delay cross-show " x1="80" y1="20" x2="20" y2="80" />
-      </g>
-    </symbol>
-  </svg>
-  -->
   <div class="document-wrapper">
-    <div class="tictactoe-container">
-      <div data-value="0" class="mark-container">
-      </div>
-      <div data-value="1" class="mark-container">
-        <svg class="svg-mark" width="100" height="100">
-            <use xlink:href="" />
-        </svg>
-      </div>
-      <div data-value="2" class="mark-container">
-        <svg class="svg-mark" width="100" height="100">
-            <use xlink:href="" />
-        </svg>
-      </div>
-      <div data-value="3" class="mark-container">
-        <svg class="svg-mark" width="100" height="100">
-            <use xlink:href="" />
-        </svg>
-      </div>
-      <div data-value="4" class="mark-container">
-        <svg class="svg-mark"  width="100" height="100">
-            <use xlink:href="" />
-        </svg>
-      </div>
-        <div data-value="5" class="mark-container">
-        <svg class="svg-mark" width="100" height="100">
-            <use xlink:href="" />
-        </svg>
-        </div>
-        <div data-value="6" class="mark-container">
-          <svg class="svg-mark" width="100" height="100">
-              <use xlink:href="" />
-          </svg>
-          </div>
-        <div data-value="7" class="mark-container">
-          <svg class="svg-mark" width="100" height="100">
-              <use xlink:href="" />
-          </svg>
-        </div>
-        <div data-value="8" class="mark-container">
-            <svg class="svg-mark" width="100" height="100">
-                <use xlink:href="" />
+    <div class="game-container">
+      <div id="game-over-window" class="game-over-container show-container">
+          <div class="game-over-mark-container">
+            <svg class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
+                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="4" result="glow"/>    
+                </filter>  
+                <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
+                <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
+                <circle class="mark-nought" cx="50%" cy="50%" r="30" />
+                <animateTransform attributeName="transform" type="scale" additive="sum" from="0 0" to=".8 .8" begin="0s" dur="1000ms" repeatCount="1" fill="freeze"></animateTransform>
             </svg>
-        </div>
-    </div>
-    <div class="game-btns-container">
-      <div id="btn-play-game" class="btn-game">Play</div>
-      <div id="btn-reset-game" class="btn-game">Reset</div>
-    </div>
-    <div class="test-area">
-      <div>
-        <svg class="player-one" height="100" width="100" viewBox="0 0 100 100">
+          </div>
+<!--      <div class="">
+            <svg class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 100% 100%">
+              <g>  
+                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="4" result="glow"/>    
+                </filter>  
+                <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
+                <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
+                <circle class="mark-nought" cx="50%" cy="50%" r="30" />
+                <animateTransform attributeName="transform" type="scale" additive="sum" from="0 0" to="2 2" begin="0s" dur="1s" repeatCount="1" fill="freeze"></animateTransform>
+              </g>
+            </svg>
+          </div>
+-->
+          <div class="">
+            <svg class="player-one-fill game-over-text" height="80px">
+              <g>
+                <defs>
+                  <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="4" result="glow"/>
+                    <feMerge>
+                      <feMergeNode in="glow"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+                <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="50%">Player 1</text>
+                <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="50%">Player 1</text>
+                <text class="winner-player-text" text-anchor="middle" x="50%" y="50%">Player 1</text>
+              </g>
+            </svg>
+          </div>
+<!--      <svg class="player-one-fill game-over-text" viewBox="0 0 100% 100%">
             <g>
               <defs>
                 <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="4 4" result="glow"/>
+                  <feGaussianBlur stdDeviation="4" result="glow"/>
                   <feMerge>
-                    <feMergeNode in="glow"/>
-                    <feMergeNode in="glow"/>
                     <feMergeNode in="glow"/>
                   </feMerge>
                 </filter>
               </defs>
-              <line style="filter: url(#glow); opacity: 0.75;" class="cross cross-show" x1="20" y1="20" x2="80" y2="80"/>
-              <line style="filter: url(#glow);" class="cross cross-delay cross-show" x1="80" y1="20" x2="20" y2="80"/>
-              <line class="cross cross-show" x1="20" y1="20" x2="80" y2="80"  />
-              <line class="cross cross-delay cross-show " x1="80" y1="20" x2="20" y2="80" />
+              <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="50%">Player 1</text>
+              <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="50%">Player 1</text>
+              <text class="winner-player-text" text-anchor="middle" x="50%" y="50%">Player 1</text>
             </g>
-        </svg>
+          </svg> -->
+          <div id="btn-game-over-close" class="btn-game">Close</div>
       </div>
-    </div>
-    <div class="test-area">
-        <div >
+      <div id="game-main" class="game-main-container">
+        <!-- Current Player Container -->
+        <div id="display-current-player" class="current-player-display-container">
+          <svg class="player-one-fill" height="auto" width="auto" viewBox="0 0 100 100">
+            <g>
+              <defs>
+                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="4" result="glow"/>
+                  <feMerge>
+                    <feMergeNode in="glow"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <text class="current-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="50%">Player 1</text>
+              <text class="current-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="50%">Player 1</text>
+              <text class="current-player-text" text-anchor="middle" x="50%" y="50%">Player 1</text>
+            </g>
+          </svg>
+        </div>
+        <!-- END Current Player Container-->
+        <!-- Tic Tac Toe Container -->
+        <div class="game-board-container">
+          <!-- Tic Tac Toe Grid -->
+          <div class="tictactoe-grid">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" >
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="glow"/>    
+              </filter>
+              <line id="grid-row-1" class="grid-line grid-line-row1-delay grid-line-row-show" x1="2%" y1="33.333%" x2="98%" y2="33.333%"  />
+              <line id="grid-row-2" class="grid-line grid-line-row2-delay grid-line-row-show" x1="2%" y1="66.666%" x2="98%" y2="66.666%"  />
+              <line id="grid-column-1" class="grid-line grid-line-column1-delay grid-line-row-show" x1="33.333%" y1="2%" x2="33.333%" y2="98%"  />
+              <line id="grid-column-2" class="grid-line grid-line-column2-delay grid-line-row-show" x1="66.666%" y1="2%" x2="66.666%" y2="98%"  />
+            </svg>
+          </div>
+          <div class="tictactoe-container">
+            <div data-value="0" class="mark-container">
+            </div>
+            <div data-value="1" class="mark-container">
+            </div>
+            <div data-value="2" class="mark-container">
+            </div>
+            <div data-value="3" class="mark-container">
+            </div>
+            <div data-value="4" class="mark-container">
+            </div>
+            <div data-value="5" class="mark-container">
+            </div>
+            <div data-value="6" class="mark-container">
+            </div>
+            <div data-value="7" class="mark-container">
+            </div>
+            <div data-value="8" class="mark-container">
+            </div>
+          </div>
+        </div>
+        <!-- END Tic Tac Toe Container-->
+        <!-- Game Buttons Container -->
+        <div class="game-btns-container">
+          <div id="btn-play-game" class="btn-game">Play</div>
+          <div id="btn-reset-game" class="btn-game">Reset</div>
+        </div>
+        <!-- END Game Buttons Container -->
+      </div>
+      <!-- Icons for design 
+
+        NEW SVG ICON. REPLACE OTHER ICONS WITH THIS ONE WHEN READY
+        <svg class="player-one" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" >
+          <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="glow"/>    
+          </filter>  
+          <circle class="mark-nought" cx="50" cy="50" r="30" opacity=".4" filter="url(#glow)"/>
+          <circle class="mark-nought" cx="50" cy="50" r="30" filter="url(#glow)"/>
+          <circle class="mark-nought" cx="50" cy="50" r="30" />
+        </svg>
+        --------------
+
+      <div class="test-area">
+        <div>
           <svg class="player-two" height="100" width="100" viewBox="0 0 100 100">
               <g>
                 <defs>
@@ -134,12 +162,36 @@
                     </feMerge>
                   </filter>
                 </defs>
-                <circle style="filter: url(#glow); opacity: 0.75;" class="nought" cx="50" cy="50" r="30"/>
-                <circle class="nought" cx="50" cy="50" r="30"/>
+                <circle style="filter: url(#glow); opacity: 0.75;" class="nought nought-show" cx="50" cy="50" r="30"/>
+                <circle class="nought nought-show" cx="50" cy="50" r="30"/>
               </g>
           </svg>
         </div>
       </div>
+      <div class="test-area">
+        <div>
+          <svg class="player-one" height="100" width="100" viewBox="0 0 100 100">
+              <g>
+                <defs>
+                  <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="4 4" result="glow"/>
+                    <feMerge>
+                      <feMergeNode in="glow"/>
+                      <feMergeNode in="glow"/>
+                      <feMergeNode in="glow"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+                <line style="filter: url(#glow); opacity: 0.75;" class="cross cross-show" x1="20" y1="20" x2="80" y2="80"/>
+                <line style="filter: url(#glow);" class="cross cross-delay cross-show" x1="80" y1="20" x2="20" y2="80"/>
+                <line class="cross cross-show" x1="20" y1="20" x2="80" y2="80"  />
+                <line class="cross cross-delay cross-show " x1="80" y1="20" x2="20" y2="80" />
+              </g>
+          </svg>
+        </div>
+      </div>
+    -->
+    </div>
   </div>
 </body>
 <script src="assets/js/script.js"></script>

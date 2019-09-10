@@ -7,14 +7,39 @@ console.clear();
 
 // https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript?ref=lnav
 
-const Player = (name, mark) => {
+// TO-DO:
+// - SVG implementation needs rework
+// --- Find a way to eliminate the ids that repeat
+// - Prevent clicking of game squares that are occupied/can't be played
+// --- Disable all game squares while computer is playing.
+// - Consider new program flow
+
+// ISSUES:
+// - Perimeter outline on the container holding game squares
+// --- This is due to the background being used to show a grid.
+// --- Options
+//        * Use SVG 
+//        * Extend container to be full screen. Requires: New alignments
+//        * Deal with it
+
+// CONSIDERATIONS:
+// - There are additional animations to consider for the grid creation animation, incl.
+// --- Increasing Stroke
+// --- Opacity
+
+const Player = (name, mark, type) => {
   let _name = name;
   let _mark = mark;
+  let _type = type;
+
   const getName = () => _name;
   const setName = (newName) => { _name = newName; };
 
   const getMark = () => _mark;
   const setMark = (newMark) => { _mark = newMark; };
+
+  const getType = () => _type;
+  const setType = (newType) => { _type = newType; };
 
   const displayDetails = () => console.log(`${getName()} ${getMark()}`);
 
@@ -23,28 +48,66 @@ const Player = (name, mark) => {
     setName,
     getMark,
     setMark,
+    getType,
+    setType,
     displayDetails,
   });
 };
 
-const playerOne = Player('Player 1', 'o');
-const playerTwo = Player('Player 2', 'x');
+const playerOne = Player('Player 1', 'o', 'player');
+const playerTwo = Player('Player 2', 'x', 'computer');
 
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
 
-  const toggleTest = () => {
-    console.log('TOGGLE');
-    console.log(_gridElements[0].children[0].classList);
-    console.log(_gridElements[0].getElementsByTagName('circle'));
-    const noughtCircles = _gridElements[0].getElementsByTagName('circle');
-    noughtCircles[0].classList.toggle('nought-show');
-    noughtCircles[1].classList.toggle('nought-show');
 
-  }
+
+
+  const toggleActiveDisplay = (currentState) => {
+    // States currently:
+    //    Game Over
+    //    Main state? In-game state 
+    console.log('--- toggleStateDisplay: ' + currentState);
+    if (currentState.toLowerCase() === 'gameover') {
+      const gameover = document.getElementById('game-over-window');
+      gameover.classList.remove('show-container');
+      gameover.style.pointerEvents = 'none';
+
+
+      const gameboard = document.getElementById('')
+    }
+  };
+
+  const closeGameOver = () => {
+    toggleActiveDisplay('gameover');
+  };
+
+  const toggleTest = () => {
+    // Testing setup for:
+    // Grid visiblity
+    const svg = document.getElementsByTagName('svg');
+    
+    const svgElement = svg[1].getElementsByTagName('line');
+    console.log(svgElement);
+    for (let i = 0; i < svgElement.length; i += 1) {
+      svgElement[i].classList.toggle('grid-line-row-show');
+    }
+    /*noughtCircles[0].classList.toggle('nought-show');
+    noughtCircles[1].classList.toggle('nought-show');*/
+  };
+
+  const displayCurrentPlayer = (player) => {
+    const displayElement = document.getElementById('display-current-player');
+    const displaySVG = displayElement.getElementsByTagName('svg');
+    const displayText = displayElement.getElementsByTagName('text');
+    displaySVG[0].classList.toggle('player-one-fill');
+    displaySVG[0].classList.toggle('player-two-fill');
+    for (let i = 0; i < displayText.length; i += 1) {
+      displayText[i].textContent = player.getName();
+    }
+  };
 
   const updateGameBoard = (gridMarks, positionPlayed) => {
-    console.log(positionPlayed);
     const marks = gridMarks.flat();
     let noughtClass;
     let crossClass;
@@ -69,7 +132,7 @@ const GameBoard = (() => {
           currentPositionClass = '';
         }
       }
-      console.log(i + ": " + currentPositionClass);
+
       currentContainer = _gridElements[i];
       if (marks[i].toLowerCase() === 'o') {
         currentContainer.innerHTML = '<svg class="' + noughtClass + '" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><circle style="filter: url(#glow); opacity: 0.75;" class="nought ' + currentPositionClass + '" cx="50" cy="50" r="30"/><circle class="nought ' + currentPositionClass + '" cx="50" cy="50" r="30"/></g></svg>';   
@@ -113,6 +176,31 @@ const GameBoard = (() => {
     update: updateGameBoard,
     init: initGrid,
     toggleTest,
+    displayCurrentPlayer,
+    closeGameOver,
+  };
+})();
+
+const ComputerAI = (() => {
+  // const _placeholder = document.getElementsByClassName('mark-container');
+
+  const generateRandNum = (low, high) => Math.floor((Math.random() * high) + low);
+
+  const computePosition = (grid) => {
+    const positionsAvailable = [];
+    const gridFlattened = grid.flat();
+    for (let i = 0; i < gridFlattened.length; i += 1) {
+      if (gridFlattened[i] === '') {
+        positionsAvailable.push(i);
+      }
+    }
+    const randNum = generateRandNum(0, positionsAvailable.length - 1);
+    const positionChosen = positionsAvailable[randNum];
+    return positionChosen;
+  };
+
+  return {
+    computePosition,
   };
 })();
 
@@ -120,6 +208,7 @@ const GameMain = (() => {
   let _grid = [['', '', ''], ['', '', ''], ['', '', '']];
   let _players = [];
   let _currentTurn = 0;
+  let _gameOver = false;
 
   const getGrid = () => _grid;
   const setGrid = (grid) => {
@@ -132,11 +221,14 @@ const GameMain = (() => {
   };
 
   const getCurrentTurn = () => _currentTurn;
-  const newTurn = () => {
-    _currentTurn += 1;
-  };
+
   const resetTurns = () => {
     _currentTurn = 0;
+  };
+
+  const isGameOver = () => _gameOver;
+  let setGameOver = (state) => {
+    _gameOver = state;
   };
 
   const newGame = (...players) => {
@@ -150,11 +242,8 @@ const GameMain = (() => {
   const drawMark = (positionPlayed, currentPlayer) => {
     const row = parseInt(positionPlayed / 3, 10);
     const column = positionPlayed % 3;
-    console.log({row},{column});
     _grid[row][column] = currentPlayer.getMark();
     GameBoard.update(GameMain.getGrid(), positionPlayed);
-
-    // CURRENT CHANGES: USE POSITION PLAYED TO ADD ANIMATION TO LAST PIECE PLAYED.
   };
 
   const checkWinConditions = (player) => {
@@ -183,18 +272,52 @@ const GameMain = (() => {
     return false;
   };
 
+  const gameEnd = (winner) => {
+    console.log("WINNER IS " + winner.getName());
+    console.log(isGameOver());
+  };
+
+  const newTurn = (player) => {
+    _currentTurn += 1;
+    
+  };
+
   const playTurn = (positionPlayed) => {
+    const currentPlayerIndex = getCurrentTurn() % getPlayers().length;
+    const nextPlayerIndex = (getCurrentTurn() + 1) % getPlayers().length;
+    const players = getPlayers();
+    const currentPlayer = players[currentPlayerIndex];
+    const nextPlayer = players[nextPlayerIndex];
+
+    // Last round: End of game
     if (getCurrentTurn() === getGrid().flat().length) {
       console.log('GAME END');
     } else {
       console.log('Current round is: ' + (getCurrentTurn() + 1))
-      const currentPlayerIndex = getCurrentTurn() % getPlayers().length;
-      const players = getPlayers();
-      drawMark(positionPlayed, players[currentPlayerIndex]);
-      if (checkWinConditions(players[currentPlayerIndex])) {
-        alert(players[currentPlayerIndex].getName() + ' wins!');
+      drawMark(positionPlayed, currentPlayer);
+
+      if (checkWinConditions(currentPlayer)) {
+        setGameOver(true);
+        setTimeout(() => {
+          gameEnd(currentPlayer);
+        }, 2000);
       }
-      newTurn();
+
+      // Increment the turn so the next player can be checked.
+      newTurn(currentPlayer);
+      // MAYBE MOVE TO newTurn()?
+      
+      GameBoard.displayCurrentPlayer(currentPlayer);
+      // Can't wait for the Computer to click an element
+      // and must force the next turn with the computer's choice.
+      if (nextPlayer.getType().toLowerCase() === 'computer' && !isGameOver()) {
+
+        setTimeout(() => { 
+          playTurn(ComputerAI.computePosition(getGrid()));
+          GameBoard.displayCurrentPlayer(nextPlayer);
+        }, 1000);
+      }
+      
     }
   };
 
@@ -202,6 +325,7 @@ const GameMain = (() => {
     setGrid([['', '', ''], ['', '', ''], ['', '', '']]);
     GameBoard.update(getGrid(), -1);
     resetTurns();
+    setGameOver = false;
   };
 
   return {
@@ -213,19 +337,14 @@ const GameMain = (() => {
   };
 })();
 
-
 GameBoard.init();
 GameBoard.update(GameMain.getGrid(), -1);
-
-
 
 GameMain.newGame(playerOne, playerTwo);
 
 document.getElementById('btn-play-game').addEventListener('click', GameBoard.toggleTest);
 document.getElementById('btn-reset-game').addEventListener('click', GameMain.resetGame);
-
-
-
+document.getElementById('btn-game-over-close').addEventListener('click', GameBoard.closeGameOver);
 /* TEST UNITS */
 // Check if test unit is working
 function testOutput(input) {
