@@ -15,12 +15,7 @@ console.clear();
 // - Consider new program flow
 
 // ISSUES:
-// - Perimeter outline on the container holding game squares
-// --- This is due to the background being used to show a grid.
-// --- Options
-//        * Use SVG 
-//        * Extend container to be full screen. Requires: New alignments
-//        * Deal with it
+// --- Buttons must be turned into real buttons
 
 // CONSIDERATIONS:
 // - There are additional animations to consider for the grid creation animation, incl.
@@ -60,40 +55,84 @@ const playerTwo = Player('Player 2', 'x', 'computer');
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
 
-
-
-
-  const toggleActiveDisplay = (currentState) => {
-    // States currently:
-    //    Game Over
-    //    Main state? In-game state 
-    console.log('--- toggleStateDisplay: ' + currentState);
-    if (currentState.toLowerCase() === 'gameover') {
-      const gameover = document.getElementById('game-over-window');
-      gameover.classList.remove('show-container');
-      gameover.style.pointerEvents = 'none';
-
-
-      const gameboard = document.getElementById('')
+  const animateGridLines = () => {
+    const gameGrid = document.getElementById('svg-game-grid').getElementsByTagName('line');
+    console.log(gameGrid);
+    for (let i = 0; i < gameGrid.length; i += 1) {
+      gameGrid[i].classList.toggle('grid-line-draw');
     }
   };
 
+  const animateGameOver = (showFlag) => {
+    const mark = document.getElementById('svg-game-over-mark');
+    const staticText = document.getElementById('svg-winner-static');
+    const playerText = document.getElementById('svg-winner-player');
+    if (showFlag) {
+      // MARK PLAYED
+      mark.classList.add('animate-game-over-mark');
+      // "WINNER" STATIC TEXT
+      staticText.classList.add('animate-game-over-static');
+      // PLAYER DYNAMIC TEXT
+      playerText.classList.add('animate-game-over-winner');
+    } else {
+      mark.classList.remove('animate-game-over-mark');
+      staticText.classList.remove('animate-game-over-static');
+      playerText.classList.remove('animate-game-over-winner');
+
+    }
+  }
+
+  const toggleDisplayState = (element, showFlag) => {
+    const tempElement = element;
+    if (showFlag) {
+      tempElement.classList.add('show-container');
+      tempElement.style.pointerEvents = 'auto';
+    } else {
+      tempElement.classList.remove('show-container');
+      tempElement.style.pointerEvents = 'none';
+    }
+  };
+
+  const allocateDisplayState = (displayState) => {
+    const gameOver = document.getElementById('game-over-window');
+    const gameBoard = document.getElementById('game-main');
+    const delayBetweenStates = 500;
+    if (displayState.toLowerCase() === 'gameboard') {
+      toggleDisplayState(gameOver, false);
+      // MUST ADD GRID AND BOARD CONTAINER SEPARATELY
+      setTimeout(() => { animateGridLines(); }, delayBetweenStates);
+      setTimeout(() => { toggleDisplayState(gameBoard, true); }, 600);
+      animateGameOver(false);
+    } if (displayState.toLowerCase() === 'gameover') {
+      animateGridLines();
+      toggleDisplayState(gameBoard, false);
+      setTimeout(() => { toggleDisplayState(gameOver, true); }, 800);
+      setTimeout(() => { animateGameOver(true); }, 1000);
+      
+      
+    }
+  };
+
+  // Button press (MUST RENAME, TERRIBLE NAME)
   const closeGameOver = () => {
-    toggleActiveDisplay('gameover');
+    allocateDisplayState('gameboard');
+    GameMain.resetGame();
   };
 
   const toggleTest = () => {
-    // Testing setup for:
-    // Grid visiblity
-    const svg = document.getElementsByTagName('svg');
-    
-    const svgElement = svg[1].getElementsByTagName('line');
-    console.log(svgElement);
-    for (let i = 0; i < svgElement.length; i += 1) {
-      svgElement[i].classList.toggle('grid-line-row-show');
-    }
-    /*noughtCircles[0].classList.toggle('nought-show');
-    noughtCircles[1].classList.toggle('nought-show');*/
+    // Quick test function
+
+    // MARK PLAYED
+    const mark = document.getElementById('svg-game-over-mark');
+    mark.classList.toggle('animate-game-over-mark');
+
+    // "WINNER" STATIC TEXT
+    const staticText = document.getElementById('svg-winner-static');
+    staticText.classList.toggle('animate-game-over-static');
+
+    // PLAYER DYNAMIC TEXT
+    const playerText = document.getElementById('svg-winner-player');
+    playerText.classList.toggle('animate-game-over-winner');
   };
 
   const displayCurrentPlayer = (player) => {
@@ -178,12 +217,11 @@ const GameBoard = (() => {
     toggleTest,
     displayCurrentPlayer,
     closeGameOver,
+    allocateDisplayState,
   };
 })();
 
 const ComputerAI = (() => {
-  // const _placeholder = document.getElementsByClassName('mark-container');
-
   const generateRandNum = (low, high) => Math.floor((Math.random() * high) + low);
 
   const computePosition = (grid) => {
@@ -273,13 +311,12 @@ const GameMain = (() => {
   };
 
   const gameEnd = (winner) => {
-    console.log("WINNER IS " + winner.getName());
-    console.log(isGameOver());
+    //setTimeout(GameBoard.allocateDisplayState('gameover', true), 1000);
+    GameBoard.allocateDisplayState('gameover', true);
   };
 
   const newTurn = (player) => {
     _currentTurn += 1;
-    
   };
 
   const playTurn = (positionPlayed) => {
@@ -297,6 +334,8 @@ const GameMain = (() => {
       drawMark(positionPlayed, currentPlayer);
 
       if (checkWinConditions(currentPlayer)) {
+        console.log("CHECK WIN CONDITIONS");
+        console.log(setGameOver);
         setGameOver(true);
         setTimeout(() => {
           gameEnd(currentPlayer);
@@ -317,7 +356,6 @@ const GameMain = (() => {
           GameBoard.displayCurrentPlayer(nextPlayer);
         }, 1000);
       }
-      
     }
   };
 
@@ -325,7 +363,7 @@ const GameMain = (() => {
     setGrid([['', '', ''], ['', '', ''], ['', '', '']]);
     GameBoard.update(getGrid(), -1);
     resetTurns();
-    setGameOver = false;
+    setGameOver(false);
   };
 
   return {
@@ -344,7 +382,7 @@ GameMain.newGame(playerOne, playerTwo);
 
 document.getElementById('btn-play-game').addEventListener('click', GameBoard.toggleTest);
 document.getElementById('btn-reset-game').addEventListener('click', GameMain.resetGame);
-document.getElementById('btn-game-over-close').addEventListener('click', GameBoard.closeGameOver);
+document.getElementById('btn-game-over-close').addEventListener('click', GameBoard.closeGameOver); //
 /* TEST UNITS */
 // Check if test unit is working
 function testOutput(input) {
