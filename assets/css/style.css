@@ -41,7 +41,6 @@ button:focus { outline: none; }
   height: auto;
   width: auto;
   max-width: 320px;
-
 }
 
 .game-main-container {
@@ -50,7 +49,11 @@ button:focus { outline: none; }
   height: 100%;
   width: 100%;
   opacity: 0;
-  transition: opacity 1s;
+  -webkit-transition: opacity 1s ease;
+  -moz-transition: opacity 1s ease;
+  -ms-transition: opacity 1s ease;
+  -o-transition: opacity 1s ease;
+  transition: opacity 1s ease;
 }
 
 .game-board-container {
@@ -65,9 +68,12 @@ button:focus { outline: none; }
   position: absolute;
   height: 100%;
   width: 100%;
-  
-  transition: opacity 1s;
   opacity: 0;
+  -webkit-transition: opacity 1s ease;
+  -moz-transition: opacity 1s ease;
+  -ms-transition: opacity 1s ease;
+  -o-transition: opacity 1s ease;
+  transition: opacity 1s ease;
 }
 
 .show-container {
@@ -88,13 +94,25 @@ button:focus { outline: none; }
   width: 100%;
   max-width: 200px;
   height: auto;
-  transform: scale(0, 0);
-  transition: all 1s;
+  -moz-transform: scale(0);
+  -webkit-transform: scale(0);
+  -o-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
   
 }
 
 .animate-game-over-mark {
-  transform: scale(.8, .8);
+  -moz-transform: scale(0.8);
+  -webkit-transform: scale(0.8);
+  -o-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  transform: scale(0.8);
 }
 
 .winner-player-text {
@@ -102,32 +120,72 @@ button:focus { outline: none; }
 }
 
 .game-over-static {
-  transform:translateX(-200px);
   width: 100%;
-  transition: all 1s;
   opacity: 0;
+  -moz-transform: translateX(-200px);
+  -webkit-transform: translateX(-200px);
+  -o-transform: translateX(-200px);
+  -ms-transform: translateX(-200px);
+  transform: translateX(-200px);
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
 }
 
 .animate-game-over-static{
   width: 100%;
-  transform:translateX(0);
   opacity: 1;
-  transition: all 800ms;
+  -moz-transform: translateX(0px);
+  -webkit-transform: translateX(0px);
+  -o-transform: translateX(0px);
+  -ms-transform: translateX(0px);
+  transform: translateX(0px);
+  -webkit-transition: all 800ms ease;
+  -moz-transition: all 800ms ease;
+  -ms-transition: all 800ms ease;
+  -o-transition: all 800ms ease;
+  transition: all 800ms ease;
+  -webkit-transition-delay: 350ms;
+  -moz-transition-delay: 350ms;
+  -ms-transition-delay: 350ms;
+  -o-transition-delay: 350ms;
   transition-delay: 350ms;
 }
 
 .game-over-winner {
-  transform:translateX(200px);
   width: 100%;
   opacity: 0;
-  transition: all 1s;
+  -moz-transform: translateX(200px);
+  -webkit-transform: translateX(200px);
+  -o-transform: translateX(200px);
+  -ms-transform: translateX(200px);
+  transform: translateX(200px);
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
 }
 
 .animate-game-over-winner{
   width: 100%;
-  transition: all 1s;
-  transform:translateX(0);
   opacity: 1;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+  -moz-transform: translateX(0px);
+  -webkit-transform: translateX(0px);
+  -o-transform: translateX(0px);
+  -ms-transform: translateX(0px);
+  transform: translateX(0px);
+  -webkit-transition-delay: 150ms;
+  -moz-transition-delay: 150ms;
+  -ms-transition-delay: 150ms;
+  -o-transition-delay: 150ms;
   transition-delay: 150ms;
 }
 
@@ -170,7 +228,11 @@ button:focus { outline: none; }
   stroke-linecap: round;
   stroke-dashoffset: -310;
   stroke-dasharray: 310;
-  transition: all 2s;
+  -webkit-transition: all 2s ease;
+  -moz-transition: all 2s ease;
+  -ms-transition: all 2s ease;
+  -o-transition: all 2s ease;
+  transition: all 2s ease;
 }
 
 /* ADD CLASS IN RUN-TIME TO SHOW AND ANIMATE GRID.
@@ -182,19 +244,35 @@ button:focus { outline: none; }
 }
 
 .grid-line-row1-delay {
-  transition-delay: 0s;
+  -webkit-transition-delay: 0ms;
+  -moz-transition-delay: 0ms;
+  -ms-transition-delay: 0ms;
+  -o-transition-delay: 0ms;
+  transition-delay: 0ms;
 }
 
 .grid-line-row2-delay {
-  transition-delay: .5s;
+    -webkit-transition-delay: 500ms;
+  -moz-transition-delay: 500ms;
+  -ms-transition-delay: 500ms;
+  -o-transition-delay: 500ms;
+  transition-delay: 500ms;
 }
 
 .grid-line-column1-delay {
-  transition-delay: .3s;
+  -webkit-transition-delay: 300ms;
+  -moz-transition-delay: 300ms;
+  -ms-transition-delay: 300ms;
+  -o-transition-delay: 300ms;
+  transition-delay: 300ms;
 }
 
 .grid-line-column2-delay {
-  transition-delay: .7s;
+  -webkit-transition-delay: 700ms;
+  -moz-transition-delay: 700ms;
+  -ms-transition-delay: 700ms;
+  -o-transition-delay: 700ms;
+  transition-delay: 700ms;
 }
 
 .tictactoe-container {
@@ -209,7 +287,11 @@ button:focus { outline: none; }
 }
 
 .game-over-mark-transform {
-  transition: 1s all;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
 
 }
 
@@ -242,18 +324,22 @@ button:focus { outline: none; }
   height: 30px;
   border: 3px solid var(--color-accent-1-light);
   border-radius: 15px;
-  transition: all .5s;
-  color: var(--color-font-player);
-
-  
+  -webkit-transition: all 500ms ease;
+  -moz-transition: all 500ms ease;
+  -ms-transition: all 500ms ease;
+  -o-transition: all 500ms ease;
+  transition: all 500ms ease;
+  color: var(--color-font-player);  
   background: none;
 }
 
 .btn-game:hover {
-
-  transition: all 0.3s;
+  -webkit-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -ms-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  transition: all 300ms ease;
   opacity: 1;
-
   color: var(--color-font-player);
 }
 
@@ -292,6 +378,7 @@ button:focus { outline: none; }
   stroke-dasharray: 190;
   -webkit-transition: stroke-dashoffset 1s;
   -moz-transition: stroke-dashoffset 1s;
+  -ms-transition: stroke-dashoffset 1s;
   -o-transition: stroke-dashoffset 1s;
   transition: stroke-dashoffset 1s;
 }
@@ -299,8 +386,6 @@ button:focus { outline: none; }
 .nought2 {
   stroke-width: 10;
   stroke-linecap: round;
-
-
 }
 
 @keyframes nought-animation {
@@ -348,11 +433,20 @@ button:focus { outline: none; }
   stroke-linecap: round;
   stroke-dashoffset: 100;
   stroke-dasharray: 100;
-  transition: stroke-dashoffset .5s;
+  -webkit-transition: stroke-dashoffset 500ms;
+  -moz-transition: stroke-dashoffset 500ms;
+  -ms-transition: stroke-dashoffset 500ms;
+  -o-transition: stroke-dashoffset 500ms;
+  transition: stroke-dashoffset 500ms;
+  
 }
 
 .cross-delay {
-  transition-delay: 0.3s;
+  -webkit-transition-delay: 300ms;
+  -moz-transition-delay: 300ms;
+  -ms-transition-delay: 300ms;
+  -o-transition-delay: 300ms;
+  transition-delay: 300ms;
 }
 
 .cross-show {

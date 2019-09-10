@@ -99,7 +99,6 @@ const GameBoard = (() => {
     const delayBetweenStates = 500;
     if (displayState.toLowerCase() === 'gameboard') {
       toggleDisplayState(gameOver, false);
-      // MUST ADD GRID AND BOARD CONTAINER SEPARATELY
       setTimeout(() => { animateGridLines(); }, delayBetweenStates);
       setTimeout(() => { toggleDisplayState(gameBoard, true); }, 600);
       animateGameOver(false);
@@ -108,8 +107,6 @@ const GameBoard = (() => {
       toggleDisplayState(gameBoard, false);
       setTimeout(() => { toggleDisplayState(gameOver, true); }, 800);
       setTimeout(() => { animateGameOver(true); }, 1000);
-      
-      
     }
   };
 
@@ -122,17 +119,6 @@ const GameBoard = (() => {
   const toggleTest = () => {
     // Quick test function
 
-    // MARK PLAYED
-    const mark = document.getElementById('svg-game-over-mark');
-    mark.classList.toggle('animate-game-over-mark');
-
-    // "WINNER" STATIC TEXT
-    const staticText = document.getElementById('svg-winner-static');
-    staticText.classList.toggle('animate-game-over-static');
-
-    // PLAYER DYNAMIC TEXT
-    const playerText = document.getElementById('svg-winner-player');
-    playerText.classList.toggle('animate-game-over-winner');
   };
 
   const displayCurrentPlayer = (player) => {
@@ -265,7 +251,7 @@ const GameMain = (() => {
   };
 
   const isGameOver = () => _gameOver;
-  let setGameOver = (state) => {
+  const setGameOver = (state) => {
     _gameOver = state;
   };
 
