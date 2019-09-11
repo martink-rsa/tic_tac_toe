@@ -104,6 +104,7 @@ button:focus { outline: none; }
   -ms-transition: all 1s ease;
   -o-transition: all 1s ease;
   transition: all 1s ease;
+  background: none;
   
 }
 
