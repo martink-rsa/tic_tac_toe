@@ -1,22 +1,14 @@
-
-:root {
-  --document-bg: rgb(31, 31, 31); /*rgba(31, 31, 31);*/
-  --board-color-mainbg: rgb(31, 31, 31); /*rgba(31, 31, 31);*/
-  --board-color-gridlines: rgb(146, 146, 146);
-  --player-one-colour: rgb(247, 21, 247);
-  --player-two-colour: rgb(49, 214, 255);
-  --color-bg: rgb(31, 31, 31);
-  --color-accent-1: rgb(102, 102, 102);
-  --color-accent-1-light: rgb(247, 21, 247);
-  --color-font-player: rgb(247, 21, 247);
+html {
+  height: 100%;
 }
 
-html, body {
+body {
   width: 100%;
   height: 100%;
   color: rgb(224, 224, 224);
   font-family: 'Lexend Tera', sans-serif;
   font-size: 16px;
+  background: rgb(31, 31, 31);
 }
 
 button:focus { outline: none; }
@@ -28,7 +20,7 @@ button:focus { outline: none; }
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--color-bg);
+  background: rgb(31, 31, 31);
 }
 
 .game-container {
@@ -62,6 +54,7 @@ button:focus { outline: none; }
 
 /* Game Over */
 .game-over-container {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   z-index: 4000;
@@ -81,6 +74,7 @@ button:focus { outline: none; }
 }
 
 .game-over-mark-container {
+  
   display: flex;
   justify-content: center;
   padding: 0;
@@ -156,6 +150,7 @@ button:focus { outline: none; }
 }
 
 .game-over-winner {
+
   width: 100%;
   opacity: 0;
   -moz-transform: translateX(200px);
@@ -210,6 +205,7 @@ button:focus { outline: none; }
 
 .current-player-text {
   font-size: 2rem;
+  transition: all 100ms;
 }
 
 /* Tic-Tac-Toe grid */
@@ -236,9 +232,6 @@ button:focus { outline: none; }
   transition: all 2s ease;
 }
 
-/* ADD CLASS IN RUN-TIME TO SHOW AND ANIMATE GRID.
-      ADDED THEM IN MANUALLY FOR NOW 
-*/
 .grid-line-draw{
   stroke-dashoffset: 0;
   stroke-dasharray: 310;
@@ -276,6 +269,30 @@ button:focus { outline: none; }
   transition-delay: 700ms;
 }
 
+/* ANIMATED WIN LINE */
+
+.win-line-container {
+  z-index: 50;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  background: rgba(100,100,100,.5);
+  pointer-events: none;
+  stroke-linecap: round;
+  
+  
+}
+
+.animated-win-line {
+  stroke: aliceblue;
+  stroke-width: 10px;
+  transform: rotateX(50deg);
+  
+  
+}
+
+/* -------------- */
+
 .tictactoe-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -302,7 +319,7 @@ button:focus { outline: none; }
   align-items: center;
   height: 100px;
   width: 100px;
-  background: var(--color-bg);
+  background: rgb(31, 31, 31);
   
 }
 
@@ -323,14 +340,14 @@ button:focus { outline: none; }
   min-width: 80px;
   width: auto;
   height: 30px;
-  border: 3px solid var(--color-accent-1-light);
+  border: 3px solid rgb(247, 21, 247);
   border-radius: 15px;
   -webkit-transition: all 500ms ease;
   -moz-transition: all 500ms ease;
   -ms-transition: all 500ms ease;
   -o-transition: all 500ms ease;
   transition: all 500ms ease;
-  color: var(--color-font-player);  
+  color: rgb(247, 21, 247);  
   background: none;
 }
 
@@ -341,7 +358,7 @@ button:focus { outline: none; }
   -o-transition: all 300ms ease;
   transition: all 300ms ease;
   opacity: 1;
-  color: var(--color-font-player);
+  color: rgb(247, 21, 247);
 }
 
 .test-area {
@@ -355,19 +372,19 @@ button:focus { outline: none; }
 }
 
 .player-one {
-  stroke: var(--player-one-colour);
+  stroke: rgb(247, 21, 247);
 }
 
 .player-one-fill {
-  fill: var(--player-one-colour);
+  fill: rgb(247, 21, 247);
 }
 
 .player-two {
-  stroke:var(--player-two-colour);
+  stroke:rgb(49, 214, 255);
 }
 
 .player-two-fill {
-  fill:var(--player-two-colour);
+  fill:rgb(49, 214, 255);
 }
 
 /* O */

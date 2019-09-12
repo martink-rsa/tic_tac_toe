@@ -13,6 +13,7 @@ console.clear();
 // - Prevent clicking of game squares that are occupied/can't be played
 // --- Disable all game squares while computer is playing.
 // - Consider new program flow
+// - Add gradient overlay on Grid
 
 // ISSUES:
 // --- Buttons must be turned into real buttons
@@ -22,10 +23,11 @@ console.clear();
 // --- Increasing Stroke
 // --- Opacity
 
-const Player = (name, mark, type) => {
+const Player = (name, mark, type, color) => {
   let _name = name;
   let _mark = mark;
   let _type = type;
+  let _color = color;
 
   const getName = () => _name;
   const setName = (newName) => { _name = newName; };
@@ -36,7 +38,8 @@ const Player = (name, mark, type) => {
   const getType = () => _type;
   const setType = (newType) => { _type = newType; };
 
-  const displayDetails = () => console.log(`${getName()} ${getMark()}`);
+  const getColor = () => _color;
+  const setColor = (newColor) => { _color = newColor; };
 
   return Object.freeze({
     getName,
@@ -45,12 +48,13 @@ const Player = (name, mark, type) => {
     setMark,
     getType,
     setType,
-    displayDetails,
+    getColor,
+    setColor,
   });
 };
 
-const playerOne = Player('Player 1', 'o', 'player');
-const playerTwo = Player('Player 2', 'x', 'computer');
+const playerOne = Player('Player 1', 'o', 'player', '#ff00ff');
+const playerTwo = Player('Player 2', 'x', 'computer', '#ff00ff');
 
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
@@ -121,14 +125,23 @@ const GameBoard = (() => {
 
   };
 
-  const displayCurrentPlayer = (player) => {
+  const displayPlayer = (player) => {
     const displayElement = document.getElementById('display-current-player');
     const displaySVG = displayElement.getElementsByTagName('svg');
     const displayText = displayElement.getElementsByTagName('text');
-    displaySVG[0].classList.toggle('player-one-fill');
-    displaySVG[0].classList.toggle('player-two-fill');
+    console.log(player);
+    const playerIndex = GameMain.getPlayers().indexOf(player);
+    console.log("INDEX: " + playerIndex);
+    if (playerIndex === 0) {
+      displaySVG[0].classList.add('player-one-fill');
+      displaySVG[0].classList.remove('player-two-fill');
+    } else if (playerIndex === 1) {
+      displaySVG[0].classList.remove('player-one-fill');
+      displaySVG[0].classList.add('player-two-fill');
+    }
     for (let i = 0; i < displayText.length; i += 1) {
       displayText[i].textContent = player.getName();
+      console.log(player.getName());
     }
   };
 
@@ -188,7 +201,10 @@ const GameBoard = (() => {
 
   const gameElementClicked = (e) => {
     const positionPlayed = e.target.getAttribute('data-value');
-    GameMain.playTurn(positionPlayed);
+    const grid = GameMain.getGrid().flat();
+    if (grid[positionPlayed] === '') {
+      GameMain.playTurn(positionPlayed);
+    }
   };
 
   const initGrid = () => {
@@ -201,7 +217,7 @@ const GameBoard = (() => {
     update: updateGameBoard,
     init: initGrid,
     toggleTest,
-    displayCurrentPlayer,
+    displayPlayer,
     closeGameOver,
     allocateDisplayState,
   };
@@ -302,6 +318,7 @@ const GameMain = (() => {
   };
 
   const newTurn = (player) => {
+
     _currentTurn += 1;
   };
 
@@ -312,6 +329,11 @@ const GameMain = (() => {
     const currentPlayer = players[currentPlayerIndex];
     const nextPlayer = players[nextPlayerIndex];
 
+    /* setTimeout(() => {
+      GameBoard.displayPlayer(player);
+    }, 1000); */
+
+    GameBoard.displayPlayer(currentPlayer);
     // Last round: End of game
     if (getCurrentTurn() === getGrid().flat().length) {
       console.log('GAME END');
@@ -320,7 +342,7 @@ const GameMain = (() => {
       drawMark(positionPlayed, currentPlayer);
 
       if (checkWinConditions(currentPlayer)) {
-        console.log("CHECK WIN CONDITIONS");
+        console.log("WIN CONDITION");
         console.log(setGameOver);
         setGameOver(true);
         setTimeout(() => {
@@ -331,15 +353,16 @@ const GameMain = (() => {
       // Increment the turn so the next player can be checked.
       newTurn(currentPlayer);
       // MAYBE MOVE TO newTurn()?
-      
-      GameBoard.displayCurrentPlayer(currentPlayer);
       // Can't wait for the Computer to click an element
       // and must force the next turn with the computer's choice.
       if (nextPlayer.getType().toLowerCase() === 'computer' && !isGameOver()) {
-
         setTimeout(() => { 
           playTurn(ComputerAI.computePosition(getGrid()));
-          GameBoard.displayCurrentPlayer(nextPlayer);
+        }, 1000);
+      }
+      if (currentPlayer.getType().toLowerCase() === 'computer' && !isGameOver()) {
+        setTimeout(() => { 
+          GameBoard.displayPlayer(nextPlayer);
         }, 1000);
       }
     }
@@ -358,6 +381,7 @@ const GameMain = (() => {
     drawMark,
     playTurn,
     resetGame,
+    getPlayers,
   };
 })();
 
@@ -374,10 +398,12 @@ document.getElementById('btn-game-over-close').addEventListener('click', GameBoa
 function testOutput(input) {
   return input;
 }
-
+/*
 module.exports = {
   testOutput,
   Player,
   GameBoard,
   GameMain,
 };
+
+*/
