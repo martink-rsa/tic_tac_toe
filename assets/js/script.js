@@ -120,9 +120,89 @@ const GameBoard = (() => {
     GameMain.resetGame();
   };
 
+  const drawWinLine = (winPosition) => {
+    const startXPosition = '15%';
+    const startYPosition = '15%';
+    const endXPosition = '85%';
+    const endYPosition = '85%';
+
+    const row1 = 15;
+    const row2 = 50;
+    const row3 = 85;
+
+    const column1 = 15;
+    const column2 = 50;
+    const column3 = 85;
+    // Main container
+    const winLineContainer = document.getElementById('win-line-main');
+
+    // Create SVG container
+    const newSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    newSvg.id = 'svg-win-line';
+    newSvg.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    newSvg.setAttribute('height', '100%');
+    newSvg.setAttribute('width', '100%');
+
+    // Create new Line
+    const newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+    // Decide where to draw the line
+    winPosition = 'columnright';
+
+    if(winPosition === 'rowtop') {
+      console.log('top row');
+      newLine.setAttribute('x1', column1 + '%');
+      newLine.setAttribute('y1', row1 + '%');
+      newLine.setAttribute('x2', column3 + '%');
+      newLine.setAttribute('y2', row1 + '%');
+    } else if (winPosition === 'rowcenter') {
+      console.log('center row');
+      newLine.setAttribute('x1', column1 + '%');
+      newLine.setAttribute('y1', row2 + "%");
+      newLine.setAttribute('x2', column3 + '%');
+      newLine.setAttribute('y2', row2 + "%");
+    } else if (winPosition === 'rowbottom') {
+      console.log('bottom row');
+      newLine.setAttribute('x1', column1 + '%');
+      newLine.setAttribute('y1', row3 + "%");
+      newLine.setAttribute('x2', column3 + '%');
+      newLine.setAttribute('y2', row3 + "%");
+    } else if (winPosition === 'columnleft') {
+      console.log('bottom row');
+      newLine.setAttribute('x1', column1 + '%');
+      newLine.setAttribute('y1', row1 + "%");
+      newLine.setAttribute('x2', column1 + '%');
+      newLine.setAttribute('y2', row3 + "%");
+    } else if (winPosition === 'columnmiddle') {
+      console.log('bottom row');
+      newLine.setAttribute('x1', column2 + '%');
+      newLine.setAttribute('y1', row1 + "%");
+      newLine.setAttribute('x2', column2 + '%');
+      newLine.setAttribute('y2', row3 + "%");
+    } else if (winPosition === 'columnright') {
+      console.log('bottom row');
+      newLine.setAttribute('x1', column3 + '%');
+      newLine.setAttribute('y1', row1 + "%");
+      newLine.setAttribute('x2', column3 + '%');
+      newLine.setAttribute('y2', row3 + "%");
+    }
+    newLine.classList.toggle('win-line-style');
+    setTimeout(() => { newLine.classList.toggle('animate-win-line'); }, 500);
+    newLine.id = 'win-line';
+    // Append line to SVG container
+    newSvg.appendChild(newLine);
+    // Append SVG container to main container
+    winLineContainer.appendChild(newSvg);
+  };
+
   const toggleTest = () => {
     // Quick test function
 
+  };
+
+  const toggleTest2 = () => {
+    const winLine = document.getElementById('win-line');
+    winLine.classList.toggle('animate-win-line');
   };
 
   const displayPlayer = (player) => {
@@ -217,9 +297,11 @@ const GameBoard = (() => {
     update: updateGameBoard,
     init: initGrid,
     toggleTest,
+    toggleTest2,
     displayPlayer,
     closeGameOver,
     allocateDisplayState,
+    drawWinLine,
   };
 })();
 
@@ -390,7 +472,8 @@ GameBoard.update(GameMain.getGrid(), -1);
 
 GameMain.newGame(playerOne, playerTwo);
 
-document.getElementById('btn-play-game').addEventListener('click', GameBoard.toggleTest);
+document.getElementById('btn-play-game').addEventListener('click', GameBoard.drawWinLine);
+document.getElementById('btn-test-2').addEventListener('click', GameBoard.toggleTest2);
 document.getElementById('btn-reset-game').addEventListener('click', GameMain.resetGame);
 document.getElementById('btn-game-over-close').addEventListener('click', GameBoard.closeGameOver); //
 /* TEST UNITS */

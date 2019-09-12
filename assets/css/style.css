@@ -278,17 +278,26 @@ button:focus { outline: none; }
   top: 0;
   background: rgba(100,100,100,.5);
   pointer-events: none;
-  stroke-linecap: round;
+
   
   
 }
 
-.animated-win-line {
-  stroke: aliceblue;
+.win-line-style {
+  stroke: rgb(216, 216, 216);
   stroke-width: 10px;
-  transform: rotateX(50deg);
-  
-  
+  stroke-linecap: round;
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  -webkit-transition: stroke-dashoffset 1s ease;
+  -moz-transition: stroke-dashoffset 1s ease;
+  -ms-transition: stroke-dashoffset 1s ease;
+  -o-transition: stroke-dashoffset 1s ease;
+  transition: stroke-dashoffset 1s ease;
+}
+
+.animate-win-line {
+  stroke-dashoffset: 0;
 }
 
 /* -------------- */
