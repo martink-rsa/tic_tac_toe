@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
+/* eslint-disable prefer-destructuring */
+
+
 
 console.clear();
 'use strict';
@@ -16,23 +19,24 @@ console.clear();
 // - Add gradient overlay on Grid
 
 // ISSUES:
+// - IMPORTANT! CAN'T ADD THE GLOW TO THE SELECTION WINDOW. FIX!
+// - IMPORTANT! Changed the Selection UI completely, possibly leaving some artefacts.
+//      Need to clean up.
 // - Buttons must be turned into real buttons
 // - Need to sort out Z-indexes so there is a proper system in place. ATM just increasing the amount
 //      significantly as to ensure the element is on top.
-// - Need to make inline SVGs:
-// --- 1. Arrow
-// --- 1. Humanoid and IBMi portrait
 
 // CONSIDERATIONS:
 // - There are additional animations to consider for the grid creation animation, incl.
 // --- Increasing Stroke
 // --- Opacity
 
-const Player = (name, mark, type, color) => {
+const Player = (name, mark, type, color, colorIndex) => {
   let _name = name;
   let _mark = mark;
   let _type = type;
-  let _color = color;
+  let _colorIndex = colorIndex;
+  let _colorValue = color;
 
   const getName = () => _name;
   const setName = (newName) => { _name = newName; };
@@ -43,8 +47,19 @@ const Player = (name, mark, type, color) => {
   const getType = () => _type;
   const setType = (newType) => { _type = newType; };
 
-  const getColor = () => _color;
-  const setColor = (newColor) => { _color = newColor; };
+  const getColorIndex = () => _colorIndex;
+  const setColorIndex = (newColorIndex) => { _colorIndex = newColorIndex; };
+
+  const getColorValue = () => _colorValue;
+  const setColorValue = (newColorValue) => { _colorValue = newColorValue; };
+
+  const getColor = () => [_colorIndex, _colorValue];
+
+  const setColor = (newColorArray) => {
+    _colorIndex = newColorArray[0];
+    _colorValue = newColorArray[1];
+  };
+
 
   return Object.freeze({
     getName,
@@ -53,18 +68,22 @@ const Player = (name, mark, type, color) => {
     setMark,
     getType,
     setType,
+    getColorIndex,
+    setColorIndex,
+    getColorValue,
+    setColorValue,
     getColor,
     setColor,
   });
 };
 
-const playerOne = Player('Player 1', 'o', 'player', '#ff00ff');
-const playerTwo = Player('Player 2', 'x', 'computer', '#ff00ff');
+const playerOne = Player('Player 1', 'o', 'player', 'rgb(247, 21, 247)', 0);
+const playerTwo = Player('Player 2', 'x', 'computer', 'rgb(49, 214, 255)', 0);
 
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
 
-  let _presetColors = ['rgb(247, 21, 247', 'rgb(49, 214, 255)', 'black', 'green', 'yellow', 'orange', 'purple'];
+  let _presetColors = ['rgb(247, 21, 247', 'rgb(49, 214, 255)', 'rgb(247, 250, 252)', 'rgb(0, 255, 10)', 'rgb(0, 255, 10)', 'rgb(235, 255, 0)', 'rgb(227, 0, 255)'];
 
   const getPresetColors = () => _presetColors;
   const setPresetColors = (newColors) => { _presetColors = newColors; };
@@ -135,13 +154,47 @@ const GameBoard = (() => {
     }
   };
 
+
+  // User clicks the arrow. Button allocator calls function below.
+  // Get the colours from the getter
+  // ISSUE: Going to need to store the index/colour of the user's current colour
+  // This is so that the slider knows which colour is previous/next.
+  // One can check the players current colour with the colour in the array
+  //    to get the index, but this is problematic. If the colour is slightly
+  //    altered, it won't match.
+  // Store the current colour and index?
+  //    On init, could set the colour and index for each player
+  //    Use the index so one can add custom colours
+
+  const initColors = () => {
+    const colorPresets = getPresetColors();
+    const colorDisplay = document.getElementById('color-display');
+    colorDisplay.style.fill = playerOne.getColorValue();
+  };
+
   const changePlayerColor = (direction) => {
+    const colorDisplay = document.getElementById('color-display');
+    const colorPresets = getPresetColors();
+    let currentColorIndex = playerOne.getColorIndex();
+
+    console.log('Change player colour');
     if (direction === 'left') {
+      if (currentColorIndex > 0) {
+        currentColorIndex -= 1;
+      } else {
+        currentColorIndex = colorPresets.length - 1;
+      }
       console.log('Player color change <<<<');
     } else if (direction === 'right') {
-      console.log('Player color change >>>>');
+      if (currentColorIndex < colorPresets.length - 1) {
+        currentColorIndex += 1;
+      } else {
+        currentColorIndex = 0;
+      }
     }
-
+    colorDisplay.style.fill = colorPresets[currentColorIndex];
+    playerOne.setColor([currentColorIndex, colorPresets[currentColorIndex]]);
+    document.documentElement.style.setProperty('--player-one', colorPresets[currentColorIndex]);
   };
 
   const allocateArrowControls = (index) => {
@@ -245,21 +298,6 @@ const GameBoard = (() => {
     winLine.classList.toggle('animate-win-line');
   };
 
-  const setSelectionColors = () => {
-    const colorElement = document.getElementsByClassName('player-selection-color-item');
-    const colorArray = getPresetColors();
-
-    for (let i = 0; i < colorElement.length; i += 1) {
-      colorElement[i].style.background = colorArray[i];
-    }
-  };
-
-  const setPlayerColor = (player, index) => {
-    const colorArray = getPresetColors();
-    player.setColor(colorArray[index]);
-    document.documentElement.style.setProperty('--player-one', colorArray[index]);
-  };
-
   const displayPlayer = (player) => {
     const displayElement = document.getElementById('display-current-player');
     const displaySVG = displayElement.getElementsByTagName('svg');
@@ -340,11 +378,10 @@ const GameBoard = (() => {
   };
 
   const initGrid = () => {
-    GameBoard.setSelectionColors();
-
     for (let i = 0; i < _gridElements.length; i += 1) {
       _gridElements[i].addEventListener('click', gameElementClicked);
     }
+    GameBoard.initColors();
   };
 
   return {
@@ -356,9 +393,8 @@ const GameBoard = (() => {
     closeGameOverWindow,
     allocateDisplayState,
     drawWinLine,
-    setPlayerColor,
-    setSelectionColors,
     allocateArrowControls,
+    initColors,
   };
 })();
 
