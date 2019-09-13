@@ -1,3 +1,10 @@
+:root {
+  --player-one: rgb(247, 21, 247);
+  --player-two: rgb(49, 214, 255);
+
+  /* Pink default: rgb(247, 21, 247); */
+}
+
 html {
   height: 100%;
 }
@@ -52,6 +59,142 @@ button:focus { outline: none; }
   position: relative;
 }
 
+/* Player selection */
+.player-selection-container {
+  z-index: 5000;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.player-selection-own-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  width: 100%;
+}
+
+.player-selection-name-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+
+.player-selection-name-static {
+  width: auto;
+  
+}
+
+.player-selection-name-input {
+  width: 100%;
+}
+
+.input-player-name {
+  width: 95%;
+  border: none;
+}
+
+/* Colours */
+
+.player-selection-color-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* flex-direction: column; */
+}
+
+.player-selection-colors-container {
+  display: flex;
+  flex-direction: row;
+
+  margin: 5px 0;
+}
+
+.player-selection-color-item {
+  height: 75px;
+  width: 75px;
+  margin: 5px 3px;
+  border: 1px solid var(--player-one);
+}
+
+
+.player-selection-type-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.player-selection-type-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.player-selection-type-box {
+  /*display: flex;
+  justify-content: center;
+  align-items: center;*/
+  height: 75px;
+  width: 75px;
+  margin: 0 5px;
+  border: 5px solid var(--player-one); 
+  overflow: hidden;
+}
+
+.player-selection-type-items {
+  display: flex;
+  flex-direction: row;
+  transition: transform 1500ms ease-in-out;
+}
+
+.type-move-left {
+  transform: translateX(-75px);
+}
+
+.svg-selection-icon {
+  background: red;
+  height: 100%;
+  width: 100%;
+}
+
+.svg-selection-arrow {
+  height: 55px;
+  border: 2px solid var(--player-one);
+}
+
+.rotate180 {
+  transform: rotate(180deg);
+}
+
+.svg-icon-person {
+  background: blue;
+
+  height: 75px;
+  width: 75px;
+}
+
+.svg-icon-computer {
+  background: blue;
+
+  height: 75px;
+  width: 75px;
+}
+
+.player-selection-controls-container {
+  display: flex;
+  justify-content: center;
+  height: auto;
+  width: 100%;
+}
+
 /* Game Over */
 .game-over-container {
   overflow: hidden;
@@ -74,7 +217,6 @@ button:focus { outline: none; }
 }
 
 .game-over-mark-container {
-  
   display: flex;
   justify-content: center;
   padding: 0;
@@ -274,9 +416,9 @@ button:focus { outline: none; }
 .win-line-container {
   z-index: 50;
   height: 100%;
+  width: 100%;
   position: absolute;
   top: 0;
-  background: rgba(100,100,100,.5);
   pointer-events: none;
 
   
@@ -284,7 +426,6 @@ button:focus { outline: none; }
 }
 
 .win-line-style {
-  stroke: rgb(216, 216, 216);
   stroke-width: 10px;
   stroke-linecap: round;
   stroke-dasharray: 320;
@@ -349,14 +490,14 @@ button:focus { outline: none; }
   min-width: 80px;
   width: auto;
   height: 30px;
-  border: 3px solid rgb(247, 21, 247);
+  border: 3px solid var(--player-one);
   border-radius: 15px;
   -webkit-transition: all 500ms ease;
   -moz-transition: all 500ms ease;
   -ms-transition: all 500ms ease;
   -o-transition: all 500ms ease;
   transition: all 500ms ease;
-  color: rgb(247, 21, 247);  
+  color: var(--player-one);  
   background: none;
 }
 
@@ -367,7 +508,7 @@ button:focus { outline: none; }
   -o-transition: all 300ms ease;
   transition: all 300ms ease;
   opacity: 1;
-  color: rgb(247, 21, 247);
+  color: var(--player-one);
 }
 
 .test-area {
@@ -381,19 +522,19 @@ button:focus { outline: none; }
 }
 
 .player-one {
-  stroke: rgb(247, 21, 247);
+  stroke: var(--player-one);
 }
 
 .player-one-fill {
-  fill: rgb(247, 21, 247);
+  fill: var(--player-one);
 }
 
 .player-two {
-  stroke:rgb(49, 214, 255);
+  stroke: var(--player-two);
 }
 
 .player-two-fill {
-  fill:rgb(49, 214, 255);
+  fill: var(--player-two);
 }
 
 /* O */

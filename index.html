@@ -1,3 +1,5 @@
+<!-- Computer icon: <div>Icons made by <a href="https://www.flaticon.com/authors/simpleicon" title="SimpleIcon">SimpleIcon</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,88 +14,73 @@
 <body>
   <div class="document-wrapper">
     <div class="game-container">
-      <div id="game-over-window" class="game-over-container show-container">
-          <div class="game-over-mark-container">
-            <svg id="svg-game-over-mark" class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
-              <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4" result="glow"/>    
-              </filter>  
-              <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
-              <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
-              <circle class="mark-nought" cx="50%" cy="50%" r="30" />
-            </svg>
-          </div>
-
-
-<!--      <div class="">
-            <svg class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 100% 100%">
-              <g>  
-                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="4" result="glow"/>    
-                </filter>  
-                <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
-                <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
-                <circle class="mark-nought" cx="50%" cy="50%" r="30" />
-                <animateTransform attributeName="transform" type="scale" additive="sum" from="0 0" to="2 2" begin="0s" dur="1s" repeatCount="1" fill="freeze"></animateTransform>
-              </g>
-            </svg>
-          </div>
--->
-          <div class="">
-            <svg id="svg-winner-static" class="player-one-fill game-over-static" height="50px">
-              <g>
-                <defs>
-                  <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                    <feGaussianBlur stdDeviation="4" result="glow"/>
-                    <feMerge>
-                      <feMergeNode in="glow"/>
-                    </feMerge>
-                  </filter>
-                </defs>
-                <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="70%">Winner</text>
-                <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="70%">Winner</text>
-                <text class="winner-player-text" text-anchor="middle" x="50%" y="70%">Winner</text>
-              </g>
-            </svg>
-          </div>
-
-          <div class="">
-              <svg id="svg-winner-player" class="player-one-fill game-over-winner" height="50px">
-                <g>
-                  <defs>
-                    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                      <feGaussianBlur stdDeviation="4" result="glow"/>
-                      <feMerge>
-                        <feMergeNode in="glow"/>
-                      </feMerge>
-                    </filter>
-                  </defs>
-                  <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="70%">Player 1</text>
-                  <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="70%">Player 1</text>
-                  <text class="winner-player-text" text-anchor="middle" x="50%" y="70%">Player 1</text>
-                </g>
-              </svg>
+      <!-- Player Selection Window -->
+      <div id="player-selection-window" class="player-selection-container">
+        <div class="player-selection-own-container">
+          <div class="player-selection-name-container">
+            <div class="player-selection-name-static">
+              PLAYER ONE
             </div>
+          </div>
 
-<!--           <div class="">
-              <svg class="player-one-fill game-over-text" height="80px">
-                <g>
-                  <defs>
-                    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                      <feGaussianBlur stdDeviation="4" result="glow"/>
-                      <feMerge>
-                        <feMergeNode in="glow"/>
-                      </feMerge>
-                    </filter>
-                  </defs>
-                  <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="50%">Player 1</text>
-                  <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="50%">Player 1</text>
-                  <text class="winner-player-text" text-anchor="middle" x="50%" y="50%">Player 1</text>
-                </g>
-              </svg>
-          </div> -->
 
-<!--      <svg class="player-one-fill game-over-text" viewBox="0 0 100% 100%">
+          <div class="player-selection-type-wrapper">
+            <div class="player-selection-type-container">
+              <div class="selection-arrow">
+                <img class="svg-selection-arrow" src="./assets/images/left-arrow.svg">
+              </div>
+              <div class="player-selection-type-box">
+                <div id="player-type-change-player-one" class="player-selection-type-items">
+                  <img class="svg-selection-icon svg-icon-person player-one-fill" src="./assets/images/person.svg"> 
+                  <img class="svg-selection-icon svg-icon-computer" src="./assets/images/computer.svg"> 
+                </div>
+              </div>
+              <div class="selection-arrow">
+                  <img class="svg-selection-arrow rotate180" src="./assets/images/left-arrow.svg">
+              </div>
+
+            </div>
+          </div>
+          <div class="player-selection-color-container">
+            <div class="selection-arrow">
+                <img class="svg-selection-arrow" src="./assets/images/left-arrow.svg">
+            </div>
+            <div class="player-selection-colors-container">
+              <div data-color="0" class="player-selection-color-item">
+                <!-- ITEM HERE -->
+              </div>
+            </div>
+            <div class="selection-arrow">
+                <img class="svg-selection-arrow rotate180" src="./assets/images/left-arrow.svg">
+            </div>
+          </div>
+        </div>
+        <div class="player-selection-controls-container">
+          <button id="btn-start-game" class="btn-game">START</button>
+        </div>
+        <!-- TEMPORARY PLAYER 2 PLACEHOLDER: DELETE AND REPLACE WITH PLAYER ONE -->
+        <div class="player-selection-own-container">
+          PLAYER 2
+        </div>
+        
+      </div>
+
+
+      <!-- END - Player Selection Window -->
+      <!-- Game Over Window -->
+      <div id="game-over-window" class="game-over-container show-container">
+        <div class="game-over-mark-container">
+          <svg id="svg-game-over-mark" class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
+            <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="4" result="glow"/>    
+            </filter>  
+            <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
+            <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
+            <circle class="mark-nought" cx="50%" cy="50%" r="30" />
+          </svg>
+        </div>
+        <div class="">
+          <svg id="svg-winner-static" class="player-one-fill game-over-static" height="50px">
             <g>
               <defs>
                 <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
@@ -103,18 +90,34 @@
                   </feMerge>
                 </filter>
               </defs>
-              <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="50%">Player 1</text>
-              <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="50%">Player 1</text>
-              <text class="winner-player-text" text-anchor="middle" x="50%" y="50%">Player 1</text>
+              <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="70%">Winner</text>
+              <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="70%">Winner</text>
+              <text class="winner-player-text" text-anchor="middle" x="50%" y="70%">Winner</text>
             </g>
-          </svg> -->
-          
-          <div class="game-over-btns-container">
-            <div><button id="btn-game-over-close" class="btn-game">New Game</button></div>
-          </div>
-          
-          
+          </svg>
         </div>
+        <div class="">
+            <svg id="svg-winner-player" class="player-one-fill game-over-winner" height="50px">
+              <g>
+                <defs>
+                  <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="4" result="glow"/>
+                    <feMerge>
+                      <feMergeNode in="glow"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+                <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="70%">Player 1</text>
+                <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="70%">Player 1</text>
+                <text class="winner-player-text" text-anchor="middle" x="50%" y="70%">Player 1</text>
+              </g>
+            </svg>
+          </div>         
+        <div class="game-over-btns-container">
+          <div><button id="btn-game-over-close" class="btn-game">New Game</button></div>
+        </div>
+      </div>
+      <!-- END - Game over window -->
       <div id="game-main" class="game-main-container">
         <!-- Current Player Container -->
         <div id="display-current-player" class="current-player-display-container">
