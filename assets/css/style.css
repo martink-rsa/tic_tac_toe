@@ -4,6 +4,19 @@
   --player-two: rgb(49, 214, 255);
 }
 
+/* .template-colors for choosing colors, delete when happy with choices */
+.template-colors {
+  background: rgb(247, 21, 247);
+  background: rgb(49, 214, 255);
+  background: rgb(247, 250, 252);
+  background: rgb(234, 255, 49);
+  background: rgb(255, 179, 15);
+  background: rgb(255, 49, 59);
+  background: rgb(49, 255, 83);
+  background: rgb(169, 39, 255);
+}
+
+
 html {
   height: 100%;
 }
@@ -202,7 +215,7 @@ button:focus {
 }
 
 .svg-color-display {
-  transition: fill 550ms ease-in-out;
+  transition: fill 450ms ease-in-out;
 }
 
 .player-selection-controls-container {
@@ -210,6 +223,57 @@ button:focus {
   justify-content: center;
   height: auto;
   width: 100%;
+}
+
+/* Color Options */
+
+.options-color-wrapper {
+  pointer-events: none;
+  opacity: 0;
+  z-index: 5500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  -webkit-transition: opacity 1s ease;
+  -moz-transition: opacity 1s ease;
+  -ms-transition: opacity 1s ease;
+  -o-transition: opacity 1s ease;
+  transition: opacity 1s ease;
+}
+
+.options-color-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 160px;
+  width: 280px;
+  padding: 10px 0;
+  border-radius: 5px;
+  background: rgba(112, 112, 112, 0.7);
+}
+
+.options-color-btns-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.options-color-btn-container {
+  background: lightgray;
+  margin: 5px;
+  height: 50px;
+  width: 50px; 
+}
+
+.btn-options-color {
+  height: 50px;
+  width: 50px;
 }
 
 /* Game Over */
@@ -227,6 +291,10 @@ button:focus {
   -ms-transition: opacity 1s ease;
   -o-transition: opacity 1s ease;
   transition: opacity 1s ease;
+}
+
+.enable-pointers {
+  pointer-events: auto;
 }
 
 .show-container {
@@ -309,7 +377,6 @@ button:focus {
 }
 
 .game-over-winner {
-
   width: 100%;
   opacity: 0;
   -moz-transform: translateX(200px);
@@ -378,7 +445,7 @@ button:focus {
 }
 
 .grid-line {
-  stroke: darkgrey;
+  stroke: rgb(223, 223, 223);
   stroke-width: 10px;
   stroke-linecap: round;
   stroke-dashoffset: -310;
@@ -547,11 +614,8 @@ button:focus {
 }
 
 
-/*
-.nought2 {
-  stroke-width: 10;
-  stroke-linecap: round;
-}
+
+
 
 
 @keyframes nought-animation {
@@ -565,7 +629,6 @@ button:focus {
 }
 
 .mark-nought {
-
   display: block;
   fill: transparent;
   stroke-linecap: round;
@@ -582,7 +645,7 @@ button:focus {
   animation-iteration-count: 1;
   animation-direction: normal;
 }
-*/
+
 
 /* O */
 .nought {
@@ -619,7 +682,6 @@ button:focus {
   -ms-transition: stroke-dashoffset 500ms;
   -o-transition: stroke-dashoffset 500ms;
   transition: stroke-dashoffset 500ms;
-  
 }
 
 .cross-delay {

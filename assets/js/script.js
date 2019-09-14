@@ -7,13 +7,15 @@
 // https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript?ref=lnav
 
 // TO-DO:
+// - Color Options Window:
+// --- Change colour selection
+// --- Add separate delay to buttons
 // - Add Player 2 selection UI
 // - Create minmax AI
 // - SVG implementation needs rework
 // --- Find a way to eliminate the ids that repeat
 // - Prevent clicking of game squares that are occupied/can't be played
 // --- Disable all game squares while computer is playing.
-// - Add gradient overlay on Grid
 
 // ISSUES:
 // - IMPORTANT! DON'T USE INNERHTML TO CREATE SVGS. BAD PRACTICE AND SECURITY RISK.
@@ -56,7 +58,6 @@ const Player = (name, mark, type, color, colorIndex) => {
   const setColorValue = (newColorValue) => { _colorValue = newColorValue; };
 
   const getColor = () => [_colorIndex, _colorValue];
-
   const setColor = (newColorArray) => {
     _colorIndex = newColorArray[0];
     _colorValue = newColorArray[1];
@@ -85,7 +86,7 @@ const playerTwo = Player('Player 2', 'x', 'computer', 'rgb(49, 214, 255)', 0);
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
 
-  let _presetColors = ['rgb(247, 21, 247', 'rgb(49, 214, 255)', 'rgb(247, 250, 252)', 'rgb(0, 255, 10)', 'rgb(0, 255, 10)', 'rgb(235, 255, 0)', 'rgb(227, 0, 255)'];
+  let _presetColors = ['rgb(247, 21, 247)', 'rgb(49, 214, 255)', 'rgb(247, 250, 252)', 'rgb(234, 255, 49)', 'rgb(255, 179, 15)', 'rgb(255, 49, 59)', 'rgb(49, 255, 83)', 'rgb(169, 39, 255)'];
 
   const getPresetColors = () => _presetColors;
   const setPresetColors = (newColors) => { _presetColors = newColors; };
@@ -115,6 +116,13 @@ const GameBoard = (() => {
     }
   };
 
+  const setWinnerElement = (player) => {
+    // Create correct Mark SVG (O or X)
+    // Set correct text to text SVG
+    // Set correct color to text, but not to static "Winner"
+  };
+
+
   const toggleDisplayState = (element, showFlag) => {
     const tempElement = element;
     if (showFlag) {
@@ -123,7 +131,7 @@ const GameBoard = (() => {
     } else {
       tempElement.classList.remove('show-container');
       tempElement.style.pointerEvents = 'none';
-    }
+    };
   };
 
   const allocateDisplayState = (displayState) => {
@@ -145,12 +153,21 @@ const GameBoard = (() => {
       setTimeout(() => { toggleDisplayState(gameOver, true); }, 800);
       setTimeout(() => { animateGameOver(true); }, 1000);
     } if (displayState.toLowerCase() === 'playerselection') {
-      // NOT COMPLETE.
-      // NEED ANIMATIONS AND DELAYS
       toggleDisplayState(gameSelection, true);
       toggleDisplayState(gameBoard, false);
       toggleDisplayState(gameOver, false);
     }
+  };
+
+  /* Color Options Window */
+  const openOptionsWindow = () => {
+    const optionsWindow = document.getElementById('options-colors-window');
+    toggleDisplayState(optionsWindow, true);
+  };
+
+  const closeOptionsWindow = () => {
+    const optionsWindow = document.getElementById('options-colors-window');
+    toggleDisplayState(optionsWindow, false);
   };
 
   const changePlayerType = (direction) => {
@@ -167,7 +184,13 @@ const GameBoard = (() => {
     colorDisplay.style.fill = playerOne.getColorValue();
   };
 
-  const changePlayerColor = (direction) => {
+  const changePlayerColor = (currentColorIndex) => {
+    const colorPresets = getPresetColors();
+    playerOne.setColor([currentColorIndex, colorPresets[currentColorIndex]]);
+    document.documentElement.style.setProperty('--player-one', colorPresets[currentColorIndex]);
+  };
+
+  const slidePlayerColor = (direction) => {
     const colorDisplay = document.getElementById('color-display');
     const colorPresets = getPresetColors();
     let currentColorIndex = playerOne.getColorIndex();
@@ -195,9 +218,9 @@ const GameBoard = (() => {
     } else if (index === 1) {
       changePlayerType('right');
     } else if (index === 2) {
-      changePlayerColor('left');
+      slidePlayerColor('left');
     } else if (index === 3) {
-      changePlayerColor('right');
+      slidePlayerColor('right');
     }
   };
 
@@ -217,7 +240,6 @@ const GameBoard = (() => {
     const row1 = '15%';
     const row2 = '50%';
     const row3 = '85%';
-
     const column1 = '15%';
     const column2 = '50%';
     const column3 = '85%';
@@ -280,7 +302,6 @@ const GameBoard = (() => {
 
   const toggleTest = () => {
     // Quick test function
-
   };
 
   const toggleTest2 = () => {
@@ -288,6 +309,7 @@ const GameBoard = (() => {
     winLine.classList.toggle('animate-win-line');
   };
 
+  // Change Gameboard text and text colour for current player
   const displayPlayer = (player) => {
     const displayElement = document.getElementById('display-current-player');
     const displaySVG = displayElement.getElementsByTagName('svg');
@@ -393,6 +415,11 @@ const GameBoard = (() => {
     drawWinLine,
     allocateArrowControls,
     initColors,
+    getPresetColors,
+    setPresetColors,
+    openOptionsWindow,
+    closeOptionsWindow,
+    changePlayerColor,
   };
 })();
 
@@ -576,18 +603,24 @@ const GameMain = (() => {
   };
 })();
 
-// /* IMPORTANT: DELETE THIS OLD ASS COLOR SYSTEM */
-// // Create Color Buttons EventListeners
-// const colorButtons = document.getElementsByClassName('player-selection-color-item');
-// for (let i = 0; i < colorButtons.length; i += 1) {
-//   colorButtons[i].addEventListener('click', (target) => {
-//     //GameBoard.setPlayerColor(playerOne, colorButtons[i].getAttribute('data-color'));
-//   });
-// }
+GameBoard.init();
+GameBoard.update(GameMain.getGrid(), -1);
+GameMain.newGame(playerOne, playerTwo);
 
-// The portrait slides two images using a class toggle
-// TO KNOW IF IMAGE HAS MOVED: Check if sliding class exists
-// The colour arrows will simply background fade colours? Might look terrible.
+/* IMPORTANT: MOVE EVENT LISTENERS TO FUNCTIONS */
+
+// Color Options on Game Board
+const colorOptionsBtnsContainer = document.getElementById('options-colors');
+const colorOptionsBtns = colorOptionsBtnsContainer.getElementsByTagName('button');
+const tempColors = GameBoard.getPresetColors();
+for (let i = 0; i < colorOptionsBtns.length; i += 1) {
+  colorOptionsBtns[i].style.background = tempColors[i];
+  colorOptionsBtns[i].addEventListener('click', (event) => {
+    GameBoard.changePlayerColor(i);
+  });
+}
+
+// Arrows on Selection screen
 const selectionArrows = document.getElementsByClassName('selection-arrow');
 for (let i = 0; i < selectionArrows.length; i += 1) {
   selectionArrows[i].addEventListener('click', () => {
@@ -595,16 +628,20 @@ for (let i = 0; i < selectionArrows.length; i += 1) {
   });
 }
 
-
-GameBoard.init();
-GameBoard.update(GameMain.getGrid(), -1);
-GameMain.newGame(playerOne, playerTwo);
-
+// Selection Screen
 document.getElementById('btn-start-game').addEventListener('click', () => { GameBoard.allocateDisplayState('gameboard'); });
-document.getElementById('btn-play-game').addEventListener('click', () => { GameBoard.setPlayerColor(playerOne, 'rgb(255,242,104)'); });
-document.getElementById('btn-test-2').addEventListener('click', GameBoard.toggleTest2);
-document.getElementById('btn-reset-game').addEventListener('click', GameMain.resetGame);
-document.getElementById('btn-game-over-close').addEventListener('click', GameBoard.closeGameOverWindow);
+
+// Gameboard Screen
+document.getElementById('btn-test-2').addEventListener('click', () => { GameBoard.toggleTest2(); });
+document.getElementById('btn-reset-game').addEventListener('click', () => { GameMain.resetGame(); });
+
+document.getElementById('btn-open-options').addEventListener('click', () => { GameBoard.openOptionsWindow(); });
+document.getElementById('btn-close-options').addEventListener('click', () => { GameBoard.closeOptionsWindow(); });
+
+
+// Game Over Screen
+document.getElementById('btn-game-over-close').addEventListener('click', () => { GameBoard.closeGameOverWindow(); });
+/* ----------------- */
 
 /* TEST UNITS */
 // Check if test unit is working
