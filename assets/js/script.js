@@ -1,24 +1,23 @@
+/* eslint-disable strict */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
 
-
-
-console.clear();
-'use strict';
-
 // https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript?ref=lnav
 
 // TO-DO:
+// - Add Player 2 selection UI
+// - Create minmax AI
 // - SVG implementation needs rework
 // --- Find a way to eliminate the ids that repeat
 // - Prevent clicking of game squares that are occupied/can't be played
 // --- Disable all game squares while computer is playing.
-// - Consider new program flow
 // - Add gradient overlay on Grid
 
 // ISSUES:
+// - IMPORTANT! DON'T USE INNERHTML TO CREATE SVGS. BAD PRACTICE AND SECURITY RISK.
+//      Create the SVGs in run time. This is already being implemented elsewhere.
 // - IMPORTANT! CAN'T ADD THE GLOW TO THE SELECTION WINDOW. FIX!
 // - IMPORTANT! Changed the Selection UI completely, possibly leaving some artefacts.
 //      Need to clean up.
@@ -30,6 +29,9 @@ console.clear();
 // - There are additional animations to consider for the grid creation animation, incl.
 // --- Increasing Stroke
 // --- Opacity
+
+
+'use strict';
 
 const Player = (name, mark, type, color, colorIndex) => {
   let _name = name;
@@ -110,9 +112,8 @@ const GameBoard = (() => {
       mark.classList.remove('animate-game-over-mark');
       staticText.classList.remove('animate-game-over-static');
       playerText.classList.remove('animate-game-over-winner');
-
     }
-  }
+  };
 
   const toggleDisplayState = (element, showFlag) => {
     const tempElement = element;
@@ -128,24 +129,31 @@ const GameBoard = (() => {
   const allocateDisplayState = (displayState) => {
     const gameOver = document.getElementById('game-over-window');
     const gameBoard = document.getElementById('game-main');
+    const gameSelection = document.getElementById('player-selection-window');
     const delayBetweenStates = 500;
     if (displayState.toLowerCase() === 'gameboard') {
+      toggleDisplayState(gameSelection, false);
       toggleDisplayState(gameOver, false);
       setTimeout(() => { animateGridLines(); }, delayBetweenStates);
       setTimeout(() => { toggleDisplayState(gameBoard, true); }, 600);
+      toggleDisplayState(gameSelection, false);
       deleteWinLine();
       animateGameOver(false);
-      
     } if (displayState.toLowerCase() === 'gameover') {
       animateGridLines();
       toggleDisplayState(gameBoard, false);
       setTimeout(() => { toggleDisplayState(gameOver, true); }, 800);
       setTimeout(() => { animateGameOver(true); }, 1000);
+    } if (displayState.toLowerCase() === 'playerselection') {
+      // NOT COMPLETE.
+      // NEED ANIMATIONS AND DELAYS
+      toggleDisplayState(gameSelection, true);
+      toggleDisplayState(gameBoard, false);
+      toggleDisplayState(gameOver, false);
     }
   };
 
   const changePlayerType = (direction) => {
-    console.log('changePlayerType trigger');
     const imageRow = document.getElementById('player-type-change-player-one');
     if (direction === 'left') {
       imageRow.classList.toggle('type-move-left');
@@ -154,20 +162,7 @@ const GameBoard = (() => {
     }
   };
 
-
-  // User clicks the arrow. Button allocator calls function below.
-  // Get the colours from the getter
-  // ISSUE: Going to need to store the index/colour of the user's current colour
-  // This is so that the slider knows which colour is previous/next.
-  // One can check the players current colour with the colour in the array
-  //    to get the index, but this is problematic. If the colour is slightly
-  //    altered, it won't match.
-  // Store the current colour and index?
-  //    On init, could set the colour and index for each player
-  //    Use the index so one can add custom colours
-
   const initColors = () => {
-    const colorPresets = getPresetColors();
     const colorDisplay = document.getElementById('color-display');
     colorDisplay.style.fill = playerOne.getColorValue();
   };
@@ -176,15 +171,12 @@ const GameBoard = (() => {
     const colorDisplay = document.getElementById('color-display');
     const colorPresets = getPresetColors();
     let currentColorIndex = playerOne.getColorIndex();
-
-    console.log('Change player colour');
     if (direction === 'left') {
       if (currentColorIndex > 0) {
         currentColorIndex -= 1;
       } else {
         currentColorIndex = colorPresets.length - 1;
       }
-      console.log('Player color change <<<<');
     } else if (direction === 'right') {
       if (currentColorIndex < colorPresets.length - 1) {
         currentColorIndex += 1;
@@ -199,7 +191,6 @@ const GameBoard = (() => {
 
   const allocateArrowControls = (index) => {
     if (index === 0) {
-    // Current test: Slide images behind mask
       changePlayerType('left');
     } else if (index === 1) {
       changePlayerType('right');
@@ -210,7 +201,6 @@ const GameBoard = (() => {
     }
   };
 
-  // Button press (MUST RENAME, TERRIBLE NAME)
   const closeGameOverWindow = () => {
     allocateDisplayState('gameboard');
     GameMain.resetGame();
@@ -329,6 +319,11 @@ const GameBoard = (() => {
       crossClass = 'player-one';
     }
     for (let i = 0; i < marks.length; i += 1) {
+      // Ryan Ford suggestion:
+      // Use objects instead of string
+      const markClasses = { o: 'naught-show', x: 'cross-show' };
+      currentPositionClass = markClasses[marks[i].toLowerCase()] || '';
+
       if (currentPositionClass !== -1 && Number(positionPlayed) === i) {
         currentPositionClass = '';
       } else {
@@ -341,29 +336,31 @@ const GameBoard = (() => {
         }
       }
 
+      // IMPORTANT! GENERATE THE DIVS, DON'T USE INNERHTML YOU GOOP
       currentContainer = _gridElements[i];
       if (marks[i].toLowerCase() === 'o') {
-        currentContainer.innerHTML = '<svg class="' + noughtClass + '" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><circle style="filter: url(#glow); opacity: 0.75;" class="nought ' + currentPositionClass + '" cx="50" cy="50" r="30"/><circle class="nought ' + currentPositionClass + '" cx="50" cy="50" r="30"/></g></svg>';   
+        currentContainer.innerHTML = `<svg class="${noughtClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><circle style="filter: url(#glow); opacity: 0.75;" class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/><circle class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/></g></svg>`;
       } else if (marks[i].toLowerCase() === 'x') {
-        currentContainer.innerHTML = '<svg class="' + crossClass + '" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><line style="filter: url(#glow); opacity: 0.75;" class="cross ' + currentPositionClass + '" x1="20" y1="20" x2="80" y2="80"/><line style="filter: url(#glow);" class="cross cross-delay ' + currentPositionClass + '" x1="80" y1="20" x2="20" y2="80"/><line class="cross ' + currentPositionClass + '" x1="20" y1="20" x2="80" y2="80"  /><line class="cross cross-delay ' + currentPositionClass + '" x1="80" y1="20" x2="20" y2="80" /></g></svg>';
+        currentContainer.innerHTML = `<svg class="${crossClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><line style="filter: url(#glow); opacity: 0.75;" class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"/><line style="filter: url(#glow);" class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80"/><line class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"  /><line class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80" /></g></svg>`;
       } else {
         currentContainer.innerHTML = '';
       }
     }
+
     if (positionPlayed !== -1) {
       if (marks[positionPlayed].toLowerCase() === 'o') {
         const noughtCircles = _gridElements[positionPlayed].getElementsByTagName('circle');
         setTimeout(() => {
-          noughtCircles[0].classList.toggle('nought-show');
-          noughtCircles[1].classList.toggle('nought-show');
+          for (let i = 0; i < noughtCircles.length; i += 1) {
+            noughtCircles[i].classList.toggle('nought-show');
+          }
         }, 100);
       } else if (marks[positionPlayed].toLowerCase() === 'x') {
         const crossLines = _gridElements[positionPlayed].getElementsByTagName('line');
         setTimeout(() => {
-          crossLines[0].classList.toggle('cross-show');
-          crossLines[1].classList.toggle('cross-show');
-          crossLines[2].classList.toggle('cross-show');
-          crossLines[3].classList.toggle('cross-show');
+          for (let i = 0; i < crossLines.length; i += 1) {
+            crossLines[i].classList.toggle('cross-show');
+          }
         }, 100);
       }
     }
@@ -382,6 +379,7 @@ const GameBoard = (() => {
       _gridElements[i].addEventListener('click', gameElementClicked);
     }
     GameBoard.initColors();
+    GameBoard.allocateDisplayState('playerselection');
   };
 
   return {
@@ -531,31 +529,30 @@ const GameMain = (() => {
     if (getCurrentTurn() === getGrid().flat().length) {
       console.log('GAME END');
     } else {
-      console.log('Current round is: ' + (getCurrentTurn() + 1))
+      console.log(`Current round is: ${(getCurrentTurn() + 1)}`);
       drawMark(positionPlayed, currentPlayer);
 
       if (checkWinConditions(currentPlayer)) {
         setGameOver(true);
+        // Draw win line
         setTimeout(() => {
           GameBoard.drawWinLine(getWinPosition());
         }, 1000);
-        /*
         setTimeout(() => {
           gameEnd(currentPlayer);
-        }, 4000);
-        */
+        }, 3000);
       }
 
       newTurn(currentPlayer);
       // Can't wait for the Computer to click an element
       // and must force the next turn with the computer's choice.
       if (nextPlayer.getType().toLowerCase() === 'computer' && !isGameOver()) {
-        setTimeout(() => { 
+        setTimeout(() => {
           playTurn(ComputerAI.computePosition(getGrid()));
         }, 1000);
       }
       if (currentPlayer.getType().toLowerCase() === 'computer' && !isGameOver()) {
-        setTimeout(() => { 
+        setTimeout(() => {
           GameBoard.displayPlayer(nextPlayer);
         }, 1000);
       }
@@ -579,14 +576,14 @@ const GameMain = (() => {
   };
 })();
 
-/* IMPORTANT: DELETE THIS OLD ASS COLOR SYSTEM */
-// Create Color Buttons EventListeners
-const colorButtons = document.getElementsByClassName('player-selection-color-item');
-for (let i = 0; i < colorButtons.length; i += 1) {
-  colorButtons[i].addEventListener('click', (target) => {
-    GameBoard.setPlayerColor(playerOne, colorButtons[i].getAttribute('data-color'));
-  });
-}
+// /* IMPORTANT: DELETE THIS OLD ASS COLOR SYSTEM */
+// // Create Color Buttons EventListeners
+// const colorButtons = document.getElementsByClassName('player-selection-color-item');
+// for (let i = 0; i < colorButtons.length; i += 1) {
+//   colorButtons[i].addEventListener('click', (target) => {
+//     //GameBoard.setPlayerColor(playerOne, colorButtons[i].getAttribute('data-color'));
+//   });
+// }
 
 // The portrait slides two images using a class toggle
 // TO KNOW IF IMAGE HAS MOVED: Check if sliding class exists
@@ -603,7 +600,7 @@ GameBoard.init();
 GameBoard.update(GameMain.getGrid(), -1);
 GameMain.newGame(playerOne, playerTwo);
 
-document.getElementById('btn-start-game').addEventListener('click', GameBoard.toggleTest);
+document.getElementById('btn-start-game').addEventListener('click', () => { GameBoard.allocateDisplayState('gameboard'); });
 document.getElementById('btn-play-game').addEventListener('click', () => { GameBoard.setPlayerColor(playerOne, 'rgb(255,242,104)'); });
 document.getElementById('btn-test-2').addEventListener('click', GameBoard.toggleTest2);
 document.getElementById('btn-reset-game').addEventListener('click', GameMain.resetGame);
