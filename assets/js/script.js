@@ -18,6 +18,7 @@
 // --- Disable all game squares while computer is playing.
 
 // ISSUES:
+// - IMPORTANT! Need side container for mobile view
 // - IMPORTANT! DON'T USE INNERHTML TO CREATE SVGS. BAD PRACTICE AND SECURITY RISK.
 //      Create the SVGs in run time. This is already being implemented elsewhere.
 // - IMPORTANT! CAN'T ADD THE GLOW TO THE SELECTION WINDOW. FIX!
@@ -81,7 +82,7 @@ const Player = (name, mark, type, color, colorIndex) => {
 };
 
 const playerOne = Player('Player 1', 'o', 'player', 'rgb(247, 21, 247)', 0);
-const playerTwo = Player('Player 2', 'x', 'computer', 'rgb(49, 214, 255)', 0);
+const playerTwo = Player('Player 2', 'x', 'computer', 'rgb(49, 214, 255)', 1);
 
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
@@ -170,18 +171,20 @@ const GameBoard = (() => {
     toggleDisplayState(optionsWindow, false);
   };
 
-  const changePlayerType = (direction) => {
-    const imageRow = document.getElementById('player-type-change-player-one');
+  const changePlayerType = (player, direction) => {
+    let imageRow;
+    const players = GameMain.getPlayers();
+    const playerIndex = players.indexOf(player);
+    if (playerIndex === 0) {
+      imageRow = document.getElementById('player-type-change-player-one');
+    } else if (playerIndex === 1) {
+      imageRow = document.getElementById('player-type-change-player-two');
+    }
     if (direction === 'left') {
       imageRow.classList.toggle('type-move-left');
     } else if (direction === 'right') {
       imageRow.classList.toggle('type-move-left');
     }
-  };
-
-  const initColors = () => {
-    const colorDisplay = document.getElementById('color-display');
-    colorDisplay.style.fill = playerOne.getColorValue();
   };
 
   const changePlayerColor = (currentColorIndex) => {
@@ -190,10 +193,16 @@ const GameBoard = (() => {
     document.documentElement.style.setProperty('--player-one', colorPresets[currentColorIndex]);
   };
 
-  const slidePlayerColor = (direction) => {
-    const colorDisplay = document.getElementById('color-display');
+  const slidePlayerColor = (player, direction) => {
+    console.log(player.getName());
+    let colorDisplay;
     const colorPresets = getPresetColors();
-    let currentColorIndex = playerOne.getColorIndex();
+    const players = GameMain.getPlayers();
+    const playerIndex = players.indexOf(player);
+    let currentColorIndex = player.getColorIndex();
+
+    console.log(playerIndex);
+    
     if (direction === 'left') {
       if (currentColorIndex > 0) {
         currentColorIndex -= 1;
@@ -207,21 +216,51 @@ const GameBoard = (() => {
         currentColorIndex = 0;
       }
     }
+    if (playerIndex === 0) {
+      colorDisplay = document.getElementById('color-display-player-one');
+    } else if (playerIndex === 1) {
+      colorDisplay = document.getElementById('color-display-player-two');
+    }
     colorDisplay.style.fill = colorPresets[currentColorIndex];
-    playerOne.setColor([currentColorIndex, colorPresets[currentColorIndex]]);
-    document.documentElement.style.setProperty('--player-one', colorPresets[currentColorIndex]);
+    player.setColor([currentColorIndex, colorPresets[currentColorIndex]]);
+    if (playerIndex === 0) {
+      document.documentElement.style.setProperty('--player-one', colorPresets[currentColorIndex]);
+    } else if (playerIndex === 1) {
+      document.documentElement.style.setProperty('--player-two', colorPresets[currentColorIndex]);
+    }
   };
 
-  const allocateArrowControls = (index) => {
+  const allocateArrowControls = (index, player) => {
+    const players = GameMain.getPlayers();
+    console.log(players);
+    
+
     if (index === 0) {
-      changePlayerType('left');
+      changePlayerType(players[0], 'left');
     } else if (index === 1) {
-      changePlayerType('right');
+      changePlayerType(players[0], 'right');
     } else if (index === 2) {
-      slidePlayerColor('left');
+      slidePlayerColor(players[0], 'left');
     } else if (index === 3) {
-      slidePlayerColor('right');
+      slidePlayerColor(players[0], 'right');
+    } else if (index === 4) {
+      changePlayerType(players[1], 'left');
+    } else if (index === 5) {
+      changePlayerType(players[1], 'right');
+    } else if (index === 6) {
+      slidePlayerColor(players[1], 'left');
+    } else if (index === 7) {
+      slidePlayerColor(players[1], 'right');
     }
+
+    // switch (index) {
+
+    //   case 0:
+    //     console.log('0');
+    //     break;
+    //   default:
+    //     break;
+    // }
   };
 
   const closeGameOverWindow = () => {
@@ -394,6 +433,14 @@ const GameBoard = (() => {
     if (grid[positionPlayed] === '') {
       GameMain.playTurn(positionPlayed);
     }
+  };
+
+  const initColors = () => {
+    const colorDisplayPlayerOne = document.getElementById('color-display-player-one');
+    const colorDisplayPlayerTwo = document.getElementById('color-display-player-two');
+    const players = GameMain.getPlayers();
+    colorDisplayPlayerOne.style.fill = players[0].getColorValue();
+    colorDisplayPlayerTwo.style.fill = players[1].getColorValue();
   };
 
   const initGrid = () => {
@@ -603,9 +650,10 @@ const GameMain = (() => {
   };
 })();
 
+GameMain.newGame(playerOne, playerTwo);
 GameBoard.init();
 GameBoard.update(GameMain.getGrid(), -1);
-GameMain.newGame(playerOne, playerTwo);
+
 
 /* IMPORTANT: MOVE EVENT LISTENERS TO FUNCTIONS */
 
@@ -615,7 +663,7 @@ const colorOptionsBtns = colorOptionsBtnsContainer.getElementsByTagName('button'
 const tempColors = GameBoard.getPresetColors();
 for (let i = 0; i < colorOptionsBtns.length; i += 1) {
   colorOptionsBtns[i].style.background = tempColors[i];
-  colorOptionsBtns[i].addEventListener('click', (event) => {
+  colorOptionsBtns[i].addEventListener('click', () => {
     GameBoard.changePlayerColor(i);
   });
 }
@@ -629,7 +677,11 @@ for (let i = 0; i < selectionArrows.length; i += 1) {
 }
 
 // Selection Screen
-document.getElementById('btn-start-game').addEventListener('click', () => { GameBoard.allocateDisplayState('gameboard'); });
+document.getElementById('btn-start-game').addEventListener('click', () => {
+  GameMain.newGame(playerOne, playerTwo); 
+  GameBoard.allocateDisplayState('gameboard');
+});
+// document.getElementById('btn-start-game').addEventListener('click', () => { GameBoard.allocateDisplayState('gameboard'); });
 
 // Gameboard Screen
 document.getElementById('btn-test-2').addEventListener('click', () => { GameBoard.toggleTest2(); });

@@ -215,6 +215,9 @@ button:focus {
 }
 
 .svg-color-display {
+  stroke: #231f20;
+  stroke-linejoin: round;
+  stroke-width: 4px;
   transition: fill 450ms ease-in-out;
 }
 
