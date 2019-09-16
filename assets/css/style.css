@@ -43,8 +43,9 @@ button:focus {
   user-select: none;                            
 }
 
-.display-none {
-  /* display: none; */
+.no-size {
+  height: 0;
+  width: 0;
 }
 
 /* IMPORTANT: Need to check if `align-items:center;` is needed */

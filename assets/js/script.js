@@ -1,8 +1,6 @@
-/* eslint-disable indent */
 /* eslint-disable strict */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
 
 // https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript?ref=lnav
@@ -112,18 +110,15 @@ const GameBoard = (() => {
     const staticText = document.getElementById('svg-winner-static');
     const playerText = document.getElementById('svg-winner-player');
 
-  //  <svg id="svg-game-over-mark" class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
-  //   <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
-  //   <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
-  //   <circle class="mark-nought" cx="50%" cy="50%" r="30" />
-  // </svg>
-  
+    //  <svg id="svg-game-over-mark" class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
+    //   <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
+    //   <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
+    //   <circle class="mark-nought" cx="50%" cy="50%" r="30" />
+    // </svg>
 
     if (showFlag) {
       const svgContainer = document.getElementById('game-over-player-mark');
       const newSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
-      console.log(svgContainer);
 
       svgContainer.innerHTML = '';
 
@@ -131,14 +126,13 @@ const GameBoard = (() => {
       newSvg.setAttribute('viewbox', '0 0 90 90');
       newSvg.id = 'svg-game-over-mark';
 
-      console.log(GameMain.getPlayerIndex(GameMain.getCurrentPlayer()));
       if (GameMain.getPlayerIndex(GameMain.getCurrentPlayer()) === 0) {
         newSvg.classList.add('player-one');
         newSvg.classList.remove('player-two');
         playerText.classList.add('player-one-fill');
         playerText.classList.remove('player-two-fill');
 
-              // Create new Circle
+        // Create new Circle
         const newCircle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         newCircle1.classList.add('mark-nought');
         newCircle1.setAttribute('cx', '50%');
@@ -159,23 +153,10 @@ const GameBoard = (() => {
         newCircle3.setAttribute('cx', '50%');
         newCircle3.setAttribute('cy', '50%');
         newCircle3.setAttribute('r', '30');
-        
+
         newSvg.appendChild(newCircle1);
         newSvg.appendChild(newCircle2);
         newSvg.appendChild(newCircle3);
-
-
-// <svg class="${crossClass}" height="100" width="100" viewBox="0 0 100 100">
-//   <g>
-//     <defs>
-//       <line style="filter: url(#glow); opacity: 0.75;" class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"/>
-//       <line style="filter: url(#glow);" class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80"/>
-//       <line class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"  />
-//       <line class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80" />
-//     </g>
-// </svg>
-      
-
       } else if (GameMain.getPlayerIndex(GameMain.getCurrentPlayer()) === 1) {
         newSvg.classList.remove('player-one');
         newSvg.classList.add('player-two');
@@ -253,17 +234,11 @@ const GameBoard = (() => {
       staticText.classList.add('animate-game-over-static');
       // PLAYER DYNAMIC TEXT
       const currentPlayer = GameMain.getCurrentPlayer();
-      console.log(currentPlayer.getName());
       const playerTextSVGText = playerText.getElementsByTagName('text');
       for (let i = 0; i < playerTextSVGText.length; i += 1) {
         playerTextSVGText[i].textContent = currentPlayer.getName();
       }
       playerText.classList.add('animate-game-over-winner');
-
-      
-
-
-
     } else {
       const mark = document.getElementById('svg-game-over-mark');
       if (mark) {
@@ -271,7 +246,6 @@ const GameBoard = (() => {
         staticText.classList.remove('animate-game-over-static');
         playerText.classList.remove('animate-game-over-winner');
       }
-      
     }
   };
 
@@ -289,7 +263,7 @@ const GameBoard = (() => {
     } else {
       tempElement.classList.remove('show-container');
       tempElement.style.pointerEvents = 'none';
-    };
+    }
   };
 
   const allocateDisplayState = (displayState) => {
@@ -386,7 +360,6 @@ const GameBoard = (() => {
 
   const allocateArrowControls = (index, player) => {
     const players = GameMain.getPlayers();
- 
     if (index === 0) {
       changePlayerType(players[0], 'left');
     } else if (index === 1) {
@@ -632,82 +605,75 @@ const GameBoard = (() => {
   };
 })();
 
+// Minimax basis credited to: Ahmad Abdolsaheb
+// https://www.freecodecamp.org/news/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37/
+// https://github.com/ahmadabdolsaheb/minimaxarticle
 const ComputerAI = (() => {
-  let functionCalls = 0;
-  let humanPlayer = 'o';
-  let computerPlayer = 'x';
-  let bestPosition;
+  const otherPlayer = playerOne.getMark();
+  const computerPlayer = playerTwo.getMark();
+
   const generateRandNum = (low, high) => Math.floor((Math.random() * high) + low);
-  
-
-  // Minimax is a recursive algorithm which is used to choose an optimal move
-  //    for a player assuming that the opponent is also playing optimally.
-
-/* eslint-disable */
 
   const fillGrid = (grid) => {
-    let newGridArray = grid.slice(0);
+    const newGridArray = grid.slice(0);
     for (let i = 0; i < newGridArray.length; i += 1) {
       if (newGridArray[i] !== 'x' && newGridArray[i] !== 'o') {
         newGridArray[i] = i;
       }
     }
     return newGridArray;
-  }
-
-  const computePosition = (grid) => {
-    let gridFilled = fillGrid(grid.flat());
-    console.log(gridFilled);
-
-    humanPlayer = 'o';
-    computerPlayer = 'x';
-    bestPosition = minMax(gridFilled, computerPlayer);
-
-    console.log('index ' + bestPosition.index);
-    console.log('function calls: ' + functionCalls);
   };
 
-  function minMax(newGrid, player) {
-    functionCalls += 1;
-    console.log('Run no. : ' + functionCalls);
+  const getPositionsAvailable = (grid) => grid.filter((item) => item !== 'o' && item !== 'x');
 
-    let availablePositions = getPositions(newGrid);
-    console.log('availablePositions: ' + availablePositions);
+  function winCheckMinimax(board, player) {
+    if ((board[0] === player && board[1] === player && board[2] === player)
+      || (board[3] === player && board[4] === player && board[5] === player)
+      || (board[6] === player && board[7] === player && board[8] === player)
+      || (board[0] === player && board[3] === player && board[6] === player)
+      || (board[1] === player && board[4] === player && board[7] === player)
+      || (board[2] === player && board[5] === player && board[8] === player)
+      || (board[0] === player && board[4] === player && board[8] === player)
+      || (board[2] === player && board[4] === player && board[6] === player)) {
+      return true;
+    }
+    return false;
+  }
 
-      // checks for the terminal states such as win, lose, and tie and returning a value accordingly
-    if (GameMain.winning(newGrid, humanPlayer)) {
+  function minimax(board, player) {
+    const newGrid = board;
+    const availSpots = getPositionsAvailable(newGrid);
+
+    if (winCheckMinimax(newGrid, otherPlayer)) {
       return { score: -10 };
-    } else if (GameMain.winning(newGrid, computerPlayer)) {
+    }
+    if (winCheckMinimax(newGrid, computerPlayer)) {
       return { score: 10 };
-    } else if (availablePositions.length === 0) {
+    }
+    if (availSpots.length === 0) {
       return { score: 0 };
     }
 
-    let moves = [];
-
-    for (let i = 0; i < availablePositions.length; i += 1) {
-      let move = {};
-      move.index = newGrid[availablePositions[i]];
-
-      newGrid[availablePositions[i]] = player;
-
-      if (player == computerPlayer) {
-        let result = minMax(newGrid, humanPlayer);
+    const moves = [];
+    for (let i = 0; i < availSpots.length; i += 1) {
+      const move = {};
+      move.index = newGrid[availSpots[i]];
+      newGrid[availSpots[i]] = player;
+      if (player === computerPlayer) {
+        const result = minimax(newGrid, otherPlayer);
         move.score = result.score;
       } else {
-        let result = minMax(newGrid, computerPlayer);
+        const result = minimax(newGrid, computerPlayer);
         move.score = result.score;
       }
-
-      newGrid[availablePositions[i]] = move.index;
-
+      newGrid[availSpots[i]] = move.index;
       moves.push(move);
-
     }
 
     let bestMove;
-    if (player == computerPlayer) {
-      let bestScore = -10000;
+    let bestScore;
+    if (player === computerPlayer) {
+      bestScore = -10000;
       for (let i = 0; i < moves.length; i += 1) {
         if (moves[i].score > bestScore) {
           bestScore = moves[i].score;
@@ -715,7 +681,7 @@ const ComputerAI = (() => {
         }
       }
     } else {
-      let bestScore = 10000;
+      bestScore = 10000;
       for (let i = 0; i < moves.length; i += 1) {
         if (moves[i].score < bestScore) {
           bestScore = moves[i].score;
@@ -727,32 +693,32 @@ const ComputerAI = (() => {
     return moves[bestMove];
   }
 
-
-
-  function getPositions(grid) {
-    console.log(grid.filter((mark) => mark != 'o' && mark != 'x'));
-    return grid.filter((mark) => mark != 'o' && mark != 'x');
-  }
-
-  // Random position chooser for Easy mode.
-
-  /*   const computePosition = (grid) => {
-    const positionsAvailable = [];
-    const gridFlattened = grid.flat();
-    for (let i = 0; i < gridFlattened.length; i += 1) {
-      if (gridFlattened[i] === '') {
-        positionsAvailable.push(i);
-      }
-    }
-    const randNum = generateRandNum(0, positionsAvailable.length - 1);
-    const positionChosen = positionsAvailable[randNum];
-    return positionChosen;
-  }; */
+  const computePosition = (grid) => {
+    const gridFilled = fillGrid(grid.flat());
+    const bestSpot = minimax(gridFilled, computerPlayer);
+    return bestSpot.index;
+  };
 
   return {
     computePosition,
   };
 })();
+
+
+// Random position chooser for Easy mode.
+
+/*   const computePosition = (grid) => {
+  const positionsAvailable = [];
+  const gridFlattened = grid.flat();
+  for (let i = 0; i < gridFlattened.length; i += 1) {
+    if (gridFlattened[i] === '') {
+      positionsAvailable.push(i);
+    }
+  }
+  const randNum = generateRandNum(0, positionsAvailable.length - 1);
+  const positionChosen = positionsAvailable[randNum];
+  return positionChosen;
+}; */
 
 const GameMain = (() => {
   let _grid = [['', '', ''], ['', '', ''], ['', '', '']];
@@ -815,9 +781,6 @@ const GameMain = (() => {
 
   // MIN MAX WIN CONDITION CHECKER
   const winning = (grid, playerMark) => {
-    console.log("WIN CONDITION CHECK: ------------");
-    console.log(grid);
-    console.log(playerMark);
     // COLUMNS
     for (let i = 0; i < grid.length; i += 1) {
       if (grid[0][i] === playerMark && grid[1][i] === playerMark && grid[2][i] === playerMark) {
@@ -907,7 +870,6 @@ const GameMain = (() => {
 
   const newTurn = (player) => {
     _currentTurn += 1;
-    console.log(getCurrentPlayer());
   };
 
   const playTurn = (positionPlayed) => {
@@ -920,6 +882,7 @@ const GameMain = (() => {
     GameBoard.displayPlayer(currentPlayer);
     // Last round: End of game
     if (getCurrentTurn() === getGrid().flat().length) {
+      // [CONTINUE HERE]
       // Change current player display to state "DRAW"
       // Animate the marks disappearing
       setTimeout(() => {
@@ -1004,7 +967,7 @@ for (let i = 0; i < selectionArrows.length; i += 1) {
 
 // Selection Screen
 document.getElementById('btn-start-game').addEventListener('click', () => {
-  GameMain.newGame(playerOne, playerTwo); 
+  GameMain.newGame(playerOne, playerTwo);
   GameBoard.allocateDisplayState('gameboard');
 });
 // document.getElementById('btn-start-game').addEventListener('click', () => { GameBoard.allocateDisplayState('gameboard'); });
