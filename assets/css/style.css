@@ -43,6 +43,10 @@ button:focus {
   user-select: none;                            
 }
 
+.display-none {
+  /* display: none; */
+}
+
 /* IMPORTANT: Need to check if `align-items:center;` is needed */
 .document-wrapper {
   display: flex;
@@ -182,8 +186,15 @@ button:focus {
   width: 75px;
 } 
 
-.svg-selection-arrow {
+.selection-arrow {
+  position: relative;
   height: 55px;
+  width: 55px;
+}
+.svg-selection-arrow {
+  position: absolute;
+  height: 55px;
+  width: 55px;
   transition: fill 500ms ease-in-out;
 }
 
@@ -207,7 +218,7 @@ button:focus {
 
 .player-selection-color-item {
   height: 55px;
-  width: 75px;
+  width: 65px;
    margin: 0 8px;
    border-radius: 15px;
    transition: background-color 450ms ease-in-out;
@@ -217,7 +228,7 @@ button:focus {
 .svg-color-display {
   stroke: #231f20;
   stroke-linejoin: round;
-  stroke-width: 4px;
+  stroke-width: 0;
   transition: fill 450ms ease-in-out;
 }
 
@@ -248,35 +259,76 @@ button:focus {
   transition: opacity 1s ease;
 }
 
+.options-color-background {
+  pointer-events: none;
+  position: absolute;
+  height: 160px;
+  width: 280px;
+  padding: 10px 0;
+  border-radius: 5px;
+  background: var(--player-one);
+  opacity: 0.4;
+}
+
 .options-color-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 160px;
-  width: 280px;
+  height: 140px;
+  width: 240px;
   padding: 10px 0;
   border-radius: 5px;
-  background: rgba(112, 112, 112, 0.7);
+  /* background: rgba(31, 31, 31, 0.7); */
+  /* border: 1px solid var(--player-one); */
+  transition: border 450ms ease-in-out; 
+  background: rgb(31, 31, 31);
 }
 
 .options-color-btns-container {
+  z-index: 6000;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  
 }
 
 .options-color-btn-container {
-  background: lightgray;
-  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 50px;
   width: 50px; 
 }
 
 .btn-options-color {
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
+  border: 1px solid rgba(0,0,0,0.4);
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0px 0px 2px 0px rgba(26,26,26,0.45);
+  -moz-box-shadow: inset 0px 0px 2px 0px rgba(26,26,26,0.45);
+  box-shadow: inset 0px 0px 2px 0px rgba(26,26,26,0.45);
+}
+
+.btn-options {
+  height: auto;
+  width: auto;
+  background: none;
+  border: none;
+  margin: 5px;
+  
+}
+
+.svg-btn-close {
+  height: 40px;
+  width: 40px;
+  fill: var(--player-one);
+  stroke:#231f20;
+  stroke-miterlimit:10;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
 /* Game Over */
@@ -333,11 +385,7 @@ button:focus {
 }
 
 .animate-game-over-mark {
-  -moz-transform: scale(0.8);
-  -webkit-transform: scale(0.8);
-  -o-transform: scale(0.8);
-  -ms-transform: scale(0.8);
-  transform: scale(0.8);
+  transform: scale(1.5);
 }
 
 .winner-player-text {
@@ -508,7 +556,6 @@ button:focus {
 }
 
 .win-line-style {
-  stroke: var(--player-one);
   stroke-width: 10px;
   stroke-linecap: round;
   stroke-dasharray: 320;
@@ -568,10 +615,10 @@ button:focus {
   margin: 5px;
   padding: 0 10px;
   min-width: 80px;
-  opacity: 0.5;
+  /* opacity: 0.5; */
   color: var(--player-one);  
   background: none;
-  border: 3px solid var(--player-one);
+  border: 2px solid var(--player-one);
   border-radius: 15px;
   -webkit-transition: all 500ms ease;
   -moz-transition: all 500ms ease;
@@ -586,7 +633,8 @@ button:focus {
   -ms-transition: all 300ms ease;
   -o-transition: all 300ms ease;
   transition: all 300ms ease;
-  opacity: 1;
+  /* opacity: 1; */
+  opacity: 0.5;
   color: var(--player-one);
 }
 
@@ -615,11 +663,6 @@ button:focus {
 .player-two-fill {
   fill: var(--player-two);
 }
-
-
-
-
-
 
 @keyframes nought-animation {
   0% {
@@ -675,6 +718,16 @@ button:focus {
 }
 
 /* X */
+.mark-cross {
+  display: block;
+  fill: transparent;
+  stroke-linecap: round;
+  stroke-dasharray: 190;
+  stroke-dashoffset: 0;
+  stroke-width: 10px;
+}
+
+
 .cross {
   stroke-width: 10;
   stroke-linecap: round;

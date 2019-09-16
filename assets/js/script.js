@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable strict */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
@@ -7,12 +8,12 @@
 // https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript?ref=lnav
 
 // TO-DO:
+// - Change Player Two text on player selection window
 // - Color Options Window:
-// --- Change colour selection
 // --- Add separate delay to buttons
-// - Add Player 2 selection UI
 // - Create minmax AI
-// - SVG implementation needs rework
+// - SVG implementation needs rework:
+// --- Added #glow filter but can't seem to apply it to custom AI designs
 // --- Find a way to eliminate the ids that repeat
 // - Prevent clicking of game squares that are occupied/can't be played
 // --- Disable all game squares while computer is playing.
@@ -36,10 +37,11 @@
 
 'use strict';
 
-const Player = (name, mark, type, color, colorIndex) => {
+const Player = (name, mark, type, level, color, colorIndex) => {
   let _name = name;
   let _mark = mark;
   let _type = type;
+  let _level = level;
   let _colorIndex = colorIndex;
   let _colorValue = color;
 
@@ -51,6 +53,9 @@ const Player = (name, mark, type, color, colorIndex) => {
 
   const getType = () => _type;
   const setType = (newType) => { _type = newType; };
+
+  const getLevel = () => _level;
+  const setLevel = (newlevel) => { _level = newlevel; };
 
   const getColorIndex = () => _colorIndex;
   const setColorIndex = (newColorIndex) => { _colorIndex = newColorIndex; };
@@ -72,6 +77,8 @@ const Player = (name, mark, type, color, colorIndex) => {
     setMark,
     getType,
     setType,
+    getLevel,
+    setLevel,
     getColorIndex,
     setColorIndex,
     getColorValue,
@@ -81,8 +88,10 @@ const Player = (name, mark, type, color, colorIndex) => {
   });
 };
 
-const playerOne = Player('Player 1', 'o', 'player', 'rgb(247, 21, 247)', 0);
-const playerTwo = Player('Player 2', 'x', 'computer', 'rgb(49, 214, 255)', 1);
+const playerOne = Player('Player 1', 'o', 'player', 'easy', 'rgb(247, 21, 247)', 0);
+const playerTwo = Player('Player 2', 'x', 'computer', 'hard', 'rgb(49, 214, 255)', 1);
+
+console.log(playerTwo.getLevel());
 
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
@@ -100,20 +109,169 @@ const GameBoard = (() => {
   };
 
   const animateGameOver = (showFlag) => {
-    const mark = document.getElementById('svg-game-over-mark');
     const staticText = document.getElementById('svg-winner-static');
     const playerText = document.getElementById('svg-winner-player');
+
+  //  <svg id="svg-game-over-mark" class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
+  //   <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
+  //   <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
+  //   <circle class="mark-nought" cx="50%" cy="50%" r="30" />
+  // </svg>
+  
+
     if (showFlag) {
+      const svgContainer = document.getElementById('game-over-player-mark');
+      const newSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+      console.log(svgContainer);
+
+      svgContainer.innerHTML = '';
+
+      newSvg.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
+      newSvg.setAttribute('viewbox', '0 0 90 90');
+      newSvg.id = 'svg-game-over-mark';
+
+      console.log(GameMain.getPlayerIndex(GameMain.getCurrentPlayer()));
+      if (GameMain.getPlayerIndex(GameMain.getCurrentPlayer()) === 0) {
+        newSvg.classList.add('player-one');
+        newSvg.classList.remove('player-two');
+        playerText.classList.add('player-one-fill');
+        playerText.classList.remove('player-two-fill');
+
+              // Create new Circle
+        const newCircle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        newCircle1.classList.add('mark-nought');
+        newCircle1.setAttribute('cx', '50%');
+        newCircle1.setAttribute('cy', '50%');
+        newCircle1.setAttribute('r', '30');
+        newCircle1.setAttribute('opacity', '0.4');
+        newCircle1.setAttribute('filter', 'url(#glow)');
+
+        const newCircle2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        newCircle2.classList.add('mark-nought');
+        newCircle2.setAttribute('cx', '50%');
+        newCircle2.setAttribute('cy', '50%');
+        newCircle2.setAttribute('r', '30');
+        newCircle2.setAttribute('filter', 'url(#glow)');
+
+        const newCircle3 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        newCircle3.classList.add('mark-nought');
+        newCircle3.setAttribute('cx', '50%');
+        newCircle3.setAttribute('cy', '50%');
+        newCircle3.setAttribute('r', '30');
+        
+        newSvg.appendChild(newCircle1);
+        newSvg.appendChild(newCircle2);
+        newSvg.appendChild(newCircle3);
+
+
+// <svg class="${crossClass}" height="100" width="100" viewBox="0 0 100 100">
+//   <g>
+//     <defs>
+//       <line style="filter: url(#glow); opacity: 0.75;" class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"/>
+//       <line style="filter: url(#glow);" class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80"/>
+//       <line class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"  />
+//       <line class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80" />
+//     </g>
+// </svg>
+      
+
+      } else if (GameMain.getPlayerIndex(GameMain.getCurrentPlayer()) === 1) {
+        newSvg.classList.remove('player-one');
+        newSvg.classList.add('player-two');
+        playerText.classList.remove('player-one-fill');
+        playerText.classList.add('player-two-fill');
+
+        // Create new Cross
+
+        const newLeftLine1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newLeftLine1.classList.add('mark-cross');
+        newLeftLine1.setAttribute('x1', '30%');
+        newLeftLine1.setAttribute('y1', '30%');
+        newLeftLine1.setAttribute('x2', '70%');
+        newLeftLine1.setAttribute('y2', '70%');
+        newLeftLine1.setAttribute('opacity', '0.4');
+        newLeftLine1.setAttribute('filter', 'url(#glow)');
+
+        const newRightLine1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newRightLine1.classList.add('mark-cross');
+        newRightLine1.setAttribute('x1', '70%');
+        newRightLine1.setAttribute('y1', '30%');
+        newRightLine1.setAttribute('x2', '30%');
+        newRightLine1.setAttribute('y2', '70%');
+        newRightLine1.setAttribute('opacity', '0.4');
+        newRightLine1.setAttribute('filter', 'url(#glow)');
+
+        const newLeftLine2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newLeftLine2.classList.add('mark-cross');
+        newLeftLine2.setAttribute('x1', '30%');
+        newLeftLine2.setAttribute('y1', '30%');
+        newLeftLine2.setAttribute('x2', '70%');
+        newLeftLine2.setAttribute('y2', '70%');
+        newLeftLine2.setAttribute('filter', 'url(#glow)');
+
+        const newRightLine2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newRightLine2.classList.add('mark-cross');
+        newRightLine2.setAttribute('x1', '70%');
+        newRightLine2.setAttribute('y1', '30%');
+        newRightLine2.setAttribute('x2', '30%');
+        newRightLine2.setAttribute('y2', '70%');
+        newRightLine2.setAttribute('filter', 'url(#glow)');
+
+        const newLeftLine3 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newLeftLine3.classList.add('mark-cross');
+        newLeftLine3.setAttribute('x1', '30%');
+        newLeftLine3.setAttribute('y1', '30%');
+        newLeftLine3.setAttribute('x2', '70%');
+        newLeftLine3.setAttribute('y2', '70%');
+
+        const newRightLine3 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newRightLine3.classList.add('mark-cross');
+        newRightLine3.setAttribute('x1', '70%');
+        newRightLine3.setAttribute('y1', '30%');
+        newRightLine3.setAttribute('x2', '30%');
+        newRightLine3.setAttribute('y2', '70%');
+        newSvg.appendChild(newLeftLine1);
+        newSvg.appendChild(newRightLine1);
+        newSvg.appendChild(newLeftLine2);
+        newSvg.appendChild(newRightLine2);
+        newSvg.appendChild(newLeftLine3);
+        newSvg.appendChild(newRightLine3);
+      }
+
+      // -------- END DYNAMIC ALLOCATIONS
+
+      newSvg.classList.add('game-over-mark');
+      svgContainer.appendChild(newSvg);
+
       // MARK PLAYED
-      mark.classList.add('animate-game-over-mark');
+      setTimeout(() => {
+        newSvg.classList.add('animate-game-over-mark');
+      }, 300);
+
       // "WINNER" STATIC TEXT
       staticText.classList.add('animate-game-over-static');
       // PLAYER DYNAMIC TEXT
+      const currentPlayer = GameMain.getCurrentPlayer();
+      console.log(currentPlayer.getName());
+      const playerTextSVGText = playerText.getElementsByTagName('text');
+      for (let i = 0; i < playerTextSVGText.length; i += 1) {
+        playerTextSVGText[i].textContent = currentPlayer.getName();
+      }
       playerText.classList.add('animate-game-over-winner');
+
+      
+
+
+
     } else {
-      mark.classList.remove('animate-game-over-mark');
-      staticText.classList.remove('animate-game-over-static');
-      playerText.classList.remove('animate-game-over-winner');
+      const mark = document.getElementById('svg-game-over-mark');
+      if (mark) {
+        mark.classList.remove('animate-game-over-mark');
+        staticText.classList.remove('animate-game-over-static');
+        playerText.classList.remove('animate-game-over-winner');
+      }
+      
     }
   };
 
@@ -122,7 +280,6 @@ const GameBoard = (() => {
     // Set correct text to text SVG
     // Set correct color to text, but not to static "Winner"
   };
-
 
   const toggleDisplayState = (element, showFlag) => {
     const tempElement = element;
@@ -194,15 +351,12 @@ const GameBoard = (() => {
   };
 
   const slidePlayerColor = (player, direction) => {
-    console.log(player.getName());
     let colorDisplay;
     const colorPresets = getPresetColors();
     const players = GameMain.getPlayers();
     const playerIndex = players.indexOf(player);
     let currentColorIndex = player.getColorIndex();
 
-    console.log(playerIndex);
-    
     if (direction === 'left') {
       if (currentColorIndex > 0) {
         currentColorIndex -= 1;
@@ -232,9 +386,7 @@ const GameBoard = (() => {
 
   const allocateArrowControls = (index, player) => {
     const players = GameMain.getPlayers();
-    console.log(players);
-    
-
+ 
     if (index === 0) {
       changePlayerType(players[0], 'left');
     } else if (index === 1) {
@@ -275,7 +427,10 @@ const GameBoard = (() => {
     line.setAttribute('y2', y2);
   }
 
-  const drawWinLine = (winPosition) => {
+  // ---------------------
+  //
+  // PASS PLAYER OR THE WINNER
+  const drawWinLine = (playerIndex, winPosition) => {
     const row1 = '15%';
     const row2 = '50%';
     const row3 = '85%';
@@ -324,8 +479,15 @@ const GameBoard = (() => {
       default:
         break;
     }
-
+    if (playerIndex === 0) {
+      newLine.classList.add('player-one');
+      newLine.classList.remove('player-two');
+    } else if (playerIndex === 1) {
+      newLine.classList.remove('player-one');
+      newLine.classList.add('player-two');
+    }
     newLine.classList.toggle('win-line-style');
+
     setTimeout(() => { newLine.classList.toggle('animate-win-line'); }, 500);
     newLine.id = 'win-line';
     // Append line to SVG container
@@ -471,9 +633,110 @@ const GameBoard = (() => {
 })();
 
 const ComputerAI = (() => {
+  let functionCalls = 0;
+  let humanPlayer = 'o';
+  let computerPlayer = 'x';
+  let bestPosition;
   const generateRandNum = (low, high) => Math.floor((Math.random() * high) + low);
+  
+
+  // Minimax is a recursive algorithm which is used to choose an optimal move
+  //    for a player assuming that the opponent is also playing optimally.
+
+/* eslint-disable */
+
+  const fillGrid = (grid) => {
+    let newGridArray = grid.slice(0);
+    for (let i = 0; i < newGridArray.length; i += 1) {
+      if (newGridArray[i] !== 'x' && newGridArray[i] !== 'o') {
+        newGridArray[i] = i;
+      }
+    }
+    return newGridArray;
+  }
 
   const computePosition = (grid) => {
+    let gridFilled = fillGrid(grid.flat());
+    console.log(gridFilled);
+
+    humanPlayer = 'o';
+    computerPlayer = 'x';
+    bestPosition = minMax(gridFilled, computerPlayer);
+
+    console.log('index ' + bestPosition.index);
+    console.log('function calls: ' + functionCalls);
+  };
+
+  function minMax(newGrid, player) {
+    functionCalls += 1;
+    console.log('Run no. : ' + functionCalls);
+
+    let availablePositions = getPositions(newGrid);
+    console.log('availablePositions: ' + availablePositions);
+
+      // checks for the terminal states such as win, lose, and tie and returning a value accordingly
+    if (GameMain.winning(newGrid, humanPlayer)) {
+      return { score: -10 };
+    } else if (GameMain.winning(newGrid, computerPlayer)) {
+      return { score: 10 };
+    } else if (availablePositions.length === 0) {
+      return { score: 0 };
+    }
+
+    let moves = [];
+
+    for (let i = 0; i < availablePositions.length; i += 1) {
+      let move = {};
+      move.index = newGrid[availablePositions[i]];
+
+      newGrid[availablePositions[i]] = player;
+
+      if (player == computerPlayer) {
+        let result = minMax(newGrid, humanPlayer);
+        move.score = result.score;
+      } else {
+        let result = minMax(newGrid, computerPlayer);
+        move.score = result.score;
+      }
+
+      newGrid[availablePositions[i]] = move.index;
+
+      moves.push(move);
+
+    }
+
+    let bestMove;
+    if (player == computerPlayer) {
+      let bestScore = -10000;
+      for (let i = 0; i < moves.length; i += 1) {
+        if (moves[i].score > bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    } else {
+      let bestScore = 10000;
+      for (let i = 0; i < moves.length; i += 1) {
+        if (moves[i].score < bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    }
+
+    return moves[bestMove];
+  }
+
+
+
+  function getPositions(grid) {
+    console.log(grid.filter((mark) => mark != 'o' && mark != 'x'));
+    return grid.filter((mark) => mark != 'o' && mark != 'x');
+  }
+
+  // Random position chooser for Easy mode.
+
+  /*   const computePosition = (grid) => {
     const positionsAvailable = [];
     const gridFlattened = grid.flat();
     for (let i = 0; i < gridFlattened.length; i += 1) {
@@ -484,7 +747,7 @@ const ComputerAI = (() => {
     const randNum = generateRandNum(0, positionsAvailable.length - 1);
     const positionChosen = positionsAvailable[randNum];
     return positionChosen;
-  };
+  }; */
 
   return {
     computePosition,
@@ -524,6 +787,16 @@ const GameMain = (() => {
     _winPosition = position;
   };
 
+  const getCurrentPlayer = () => {
+    const players = getPlayers();
+    const playerIndex = ((getCurrentTurn() - 1) % players.length);
+    return players[playerIndex];
+  };
+
+  const getPlayerIndex = (player) => {
+    const players = getPlayers();
+    return players.indexOf(player);
+  };
 
   const newGame = (...players) => {
     const newPlayers = [];
@@ -540,6 +813,51 @@ const GameMain = (() => {
     GameBoard.update(GameMain.getGrid(), positionPlayed);
   };
 
+  // MIN MAX WIN CONDITION CHECKER
+  const winning = (grid, playerMark) => {
+    console.log("WIN CONDITION CHECK: ------------");
+    console.log(grid);
+    console.log(playerMark);
+    // COLUMNS
+    for (let i = 0; i < grid.length; i += 1) {
+      if (grid[0][i] === playerMark && grid[1][i] === playerMark && grid[2][i] === playerMark) {
+        if (i === 0) {
+          setWinPosition('columnleft');
+        } else if (i === 1) {
+          setWinPosition('columnmiddle');
+        } else if (i === 2) {
+          setWinPosition('columnright');
+        }
+        return true;
+      }
+    }
+    // ROWS
+    for (let i = 0; i < grid.length; i += 1) {
+      if (grid[i][0] === playerMark && grid[i][1] === playerMark && grid[i][2] === playerMark) {
+        if (i === 0) {
+          setWinPosition('rowtop');
+        } else if (i === 1) {
+          setWinPosition('rowmiddle');
+        } else if (i === 2) {
+          setWinPosition('rowbottom');
+        }
+        return true;
+      }
+    }
+    // DIAGONAL - LEFT TO RIGHT
+    if (grid[0][0] === playerMark && grid[1][1] === playerMark && grid[2][2] === playerMark) {
+      setWinPosition('diagonalleft');
+      return true;
+    }
+    // DIAGONAL - RIGHT TO LEFT
+    if (grid[0][2] === playerMark && grid[1][1] === playerMark && grid[2][0] === playerMark) {
+      setWinPosition('diagonalright');
+      return true;
+    }
+    return false;
+  };
+
+  // OLD WIN CONDITION CHECK
   const checkWinConditions = (player) => {
     const grid = getGrid();
     const mark = player.getMark();
@@ -589,6 +907,7 @@ const GameMain = (() => {
 
   const newTurn = (player) => {
     _currentTurn += 1;
+    console.log(getCurrentPlayer());
   };
 
   const playTurn = (positionPlayed) => {
@@ -601,7 +920,11 @@ const GameMain = (() => {
     GameBoard.displayPlayer(currentPlayer);
     // Last round: End of game
     if (getCurrentTurn() === getGrid().flat().length) {
-      console.log('GAME END');
+      // Change current player display to state "DRAW"
+      // Animate the marks disappearing
+      setTimeout(() => {
+        GameMain.resetGame();
+      }, 3000);
     } else {
       console.log(`Current round is: ${(getCurrentTurn() + 1)}`);
       drawMark(positionPlayed, currentPlayer);
@@ -610,7 +933,7 @@ const GameMain = (() => {
         setGameOver(true);
         // Draw win line
         setTimeout(() => {
-          GameBoard.drawWinLine(getWinPosition());
+          GameBoard.drawWinLine(getPlayerIndex(currentPlayer), getWinPosition());
         }, 1000);
         setTimeout(() => {
           gameEnd(currentPlayer);
@@ -647,6 +970,9 @@ const GameMain = (() => {
     playTurn,
     resetGame,
     getPlayers,
+    getCurrentPlayer,
+    getPlayerIndex,
+    winning,
   };
 })();
 

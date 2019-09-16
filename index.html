@@ -14,6 +14,18 @@
 </head>
 <body class="disable-select">
   <div class="document-wrapper">
+    <!-- SVG Gaussian Filter -->
+    <svg class="display-none" >            
+      <defs>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="4" result="glow"/>
+          <feMerge>
+            <feMergeNode in="glow"/>
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+    <!-- END SVG Gaussian Filter -->
     <div class="game-container">
       <!-- Player Selection Window -->
       <div id="player-selection-window" class="player-selection-container">
@@ -22,14 +34,6 @@
             <div class="player-selection-name-static">
               <svg class="svg-player-selection-name player-one-fill" height="50px">
                 <g>
-                  <defs>
-                    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                      <feGaussianBlur stdDeviation="4" result="glow"/>
-                      <feMerge>
-                        <feMergeNode in="glow"/>
-                      </feMerge>
-                    </filter>
-                  </defs>
                   <text class="player-selection-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="70%">PLAYER ONE</text>
                   <text class="player-selection-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="70%">PLAYER ONE</text>
                   <text class="player-selection-player-text" text-anchor="middle" x="50%" y="70%">PLAYER ONE</text>
@@ -39,46 +43,87 @@
           </div>
           <div class="player-selection-type-wrapper">
             <div class="player-selection-type-container">
-              <div class="selection-arrow">
+              <div class="selection-arrow">      
+                <svg class="svg-selection-arrow player-one-fill" style="filter: url(#glow); opacity: 0.75;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-one-fill" style="filter: url(#glow);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
                 <svg class="svg-selection-arrow player-one-fill"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
-                    <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
                 </svg>
               </div>
               <div class="player-selection-type-box">
                 <div id="player-type-change-player-one" class="player-selection-type-items">
                   <div class="player-selection-type-item-container">
-                    <svg class="svg-selection-icon svg-icon-person player-one-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.85 100"><path  d="M28.45,61.53c-5.55,2.76-10.67,5.28-14.33,10.3a25.86,25.86,0,0,0-5,15.2V97.82A2.27,2.27,0,0,0,11.42,100H88.58a2.27,2.27,0,0,0,2.35-2.18V87a25.86,25.86,0,0,0-5.05-15.2c-3.66-5-8.78-7.54-14.33-10.3-3.57-1.78-6.89-4.37-8.5-7.75,10.27-4.54,17.37-14.26,17.37-25.53C80.42,12.65,66.8,0,50,0S19.58,12.65,19.58,28.25c0,11.27,7.1,21,17.37,25.53C35.34,57.16,32,59.75,28.45,61.53Z" transform="translate(-9.07)"/>
+                    <svg class="svg-selection-icon svg-icon-person player-one-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.85 100">
+                      <path style="filter: url(#glow); opacity: 0.75;" d="M28.45,61.53c-5.55,2.76-10.67,5.28-14.33,10.3a25.86,25.86,0,0,0-5,15.2V97.82A2.27,2.27,0,0,0,11.42,100H88.58a2.27,2.27,0,0,0,2.35-2.18V87a25.86,25.86,0,0,0-5.05-15.2c-3.66-5-8.78-7.54-14.33-10.3-3.57-1.78-6.89-4.37-8.5-7.75,10.27-4.54,17.37-14.26,17.37-25.53C80.42,12.65,66.8,0,50,0S19.58,12.65,19.58,28.25c0,11.27,7.1,21,17.37,25.53C35.34,57.16,32,59.75,28.45,61.53Z" transform="translate(-9.07)"/>
+                      <path style="filter: url(#glow);" d="M28.45,61.53c-5.55,2.76-10.67,5.28-14.33,10.3a25.86,25.86,0,0,0-5,15.2V97.82A2.27,2.27,0,0,0,11.42,100H88.58a2.27,2.27,0,0,0,2.35-2.18V87a25.86,25.86,0,0,0-5.05-15.2c-3.66-5-8.78-7.54-14.33-10.3-3.57-1.78-6.89-4.37-8.5-7.75,10.27-4.54,17.37-14.26,17.37-25.53C80.42,12.65,66.8,0,50,0S19.58,12.65,19.58,28.25c0,11.27,7.1,21,17.37,25.53C35.34,57.16,32,59.75,28.45,61.53Z" transform="translate(-9.07)"/>
+                      <path d="M28.45,61.53c-5.55,2.76-10.67,5.28-14.33,10.3a25.86,25.86,0,0,0-5,15.2V97.82A2.27,2.27,0,0,0,11.42,100H88.58a2.27,2.27,0,0,0,2.35-2.18V87a25.86,25.86,0,0,0-5.05-15.2c-3.66-5-8.78-7.54-14.33-10.3-3.57-1.78-6.89-4.37-8.5-7.75,10.27-4.54,17.37-14.26,17.37-25.53C80.42,12.65,66.8,0,50,0S19.58,12.65,19.58,28.25c0,11.27,7.1,21,17.37,25.53C35.34,57.16,32,59.75,28.45,61.53Z" transform="translate(-9.07)"/>
                     </svg>
                   </div>
                   <div class="player-selection-type-item-container">
-                    <svg class="svg-selection-icon svg-icon-computer player-one-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M25,13.33H6.25A6.47,6.47,0,0,0,0,20V93.33A6.47,6.47,0,0,0,6.25,100H25a6.46,6.46,0,0,0,6.25-6.67V20A6.47,6.47,0,0,0,25,13.33ZM9.38,80a3.34,3.34,0,0,1,0-6.67,3.34,3.34,0,0,1,0,6.67ZM25,40H6.25V33.33H25V40Zm0-13.33H6.25V20H25v6.67Z"/><path  d="M65.63,86.67V80H46.88v6.67a6.47,6.47,0,0,0-6.26,6.66H71.87A6.46,6.46,0,0,0,65.63,86.67Z"/><path  d="M93.75,0h-75A6.47,6.47,0,0,0,12.5,6.67H93.75V60H37.5V73.33H93.75A6.46,6.46,0,0,0,100,66.67v-60A6.47,6.47,0,0,0,93.75,0ZM56.25,70a3.34,3.34,0,1,1,3.13-3.33A3.23,3.23,0,0,1,56.25,70Z"/></svg>
+                    <svg class="svg-selection-icon svg-icon-computer player-one-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                      <path style="filter: url(#glow); opacity: 0.75;" d="M25,13.33H6.25A6.47,6.47,0,0,0,0,20V93.33A6.47,6.47,0,0,0,6.25,100H25a6.46,6.46,0,0,0,6.25-6.67V20A6.47,6.47,0,0,0,25,13.33ZM9.38,80a3.34,3.34,0,0,1,0-6.67,3.34,3.34,0,0,1,0,6.67ZM25,40H6.25V33.33H25V40Zm0-13.33H6.25V20H25v6.67Z"/>
+                      <path style="filter: url(#glow); opacity: 0.75;" d="M65.63,86.67V80H46.88v6.67a6.47,6.47,0,0,0-6.26,6.66H71.87A6.46,6.46,0,0,0,65.63,86.67Z"/>
+                      <path style="filter: url(#glow); opacity: 0.75;" d="M93.75,0h-75A6.47,6.47,0,0,0,12.5,6.67H93.75V60H37.5V73.33H93.75A6.46,6.46,0,0,0,100,66.67v-60A6.47,6.47,0,0,0,93.75,0ZM56.25,70a3.34,3.34,0,1,1,3.13-3.33A3.23,3.23,0,0,1,56.25,70Z"/>
+                      <path style="filter: url(#glow);" d="M25,13.33H6.25A6.47,6.47,0,0,0,0,20V93.33A6.47,6.47,0,0,0,6.25,100H25a6.46,6.46,0,0,0,6.25-6.67V20A6.47,6.47,0,0,0,25,13.33ZM9.38,80a3.34,3.34,0,0,1,0-6.67,3.34,3.34,0,0,1,0,6.67ZM25,40H6.25V33.33H25V40Zm0-13.33H6.25V20H25v6.67Z"/>
+                      <path style="filter: url(#glow);" d="M65.63,86.67V80H46.88v6.67a6.47,6.47,0,0,0-6.26,6.66H71.87A6.46,6.46,0,0,0,65.63,86.67Z"/>
+                      <path style="filter: url(#glow);" d="M93.75,0h-75A6.47,6.47,0,0,0,12.5,6.67H93.75V60H37.5V73.33H93.75A6.46,6.46,0,0,0,100,66.67v-60A6.47,6.47,0,0,0,93.75,0ZM56.25,70a3.34,3.34,0,1,1,3.13-3.33A3.23,3.23,0,0,1,56.25,70Z"/>
+                      <path d="M25,13.33H6.25A6.47,6.47,0,0,0,0,20V93.33A6.47,6.47,0,0,0,6.25,100H25a6.46,6.46,0,0,0,6.25-6.67V20A6.47,6.47,0,0,0,25,13.33ZM9.38,80a3.34,3.34,0,0,1,0-6.67,3.34,3.34,0,0,1,0,6.67ZM25,40H6.25V33.33H25V40Zm0-13.33H6.25V20H25v6.67Z"/>
+                      <path d="M65.63,86.67V80H46.88v6.67a6.47,6.47,0,0,0-6.26,6.66H71.87A6.46,6.46,0,0,0,65.63,86.67Z"/>
+                      <path d="M93.75,0h-75A6.47,6.47,0,0,0,12.5,6.67H93.75V60H37.5V73.33H93.75A6.46,6.46,0,0,0,100,66.67v-60A6.47,6.47,0,0,0,93.75,0ZM56.25,70a3.34,3.34,0,1,1,3.13-3.33A3.23,3.23,0,0,1,56.25,70Z"/>
+                    </svg>
                   </div>
                 </div>
               </div>
-              <div class="selection-arrow">
-                <svg class="svg-selection-arrow rotate180 player-one-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
-                  <path  d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+              <div class="selection-arrow">      
+                <svg class="svg-selection-arrow player-one-fill rotate180" style="filter: url(#glow); opacity: 0.75;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-one-fill rotate180" style="filter: url(#glow);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-one-fill rotate180"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
                 </svg>
               </div>
             </div>
           </div>
           <div class="player-selection-color-container">
-            <div class="selection-arrow">
-              <svg class="svg-selection-arrow player-one-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
-                <path  d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
-              </svg>
-            </div>
+              <div class="selection-arrow">      
+                <svg class="svg-selection-arrow player-one-fill" style="filter: url(#glow); opacity: 0.75;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-one-fill" style="filter: url(#glow);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-one-fill"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+              </div>
             <div class="player-selection-colors-container">
               <div class="player-selection-color-item">
-                  <svg id="color-display-player-one" class="svg-color-display" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.11 54.57">
-                    <rect x="2" y="2" width="70.11" height="50.57" rx="10.67"/>
-                    <rect x="10.61" y="10.67" width="53" height="33.78" rx="6.92"/>
-                  </svg>
+                <svg id="color-display-player-one" class="svg-color-display" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70.11 50.57">
+                  <path style="filter: url(#glow); opacity: 0.75;" d="M61.89,2.21H13.11A10.67,10.67,0,0,0,2.44,12.88V42.12A10.67,10.67,0,0,0,13.11,52.79H61.89A10.67,10.67,0,0,0,72.56,42.12V12.88A10.67,10.67,0,0,0,61.89,2.21Zm2.17,35.54a6.92,6.92,0,0,1-6.92,6.92H18a6.91,6.91,0,0,1-6.91-6.92V17.81A6.91,6.91,0,0,1,18,10.89H57.14a6.92,6.92,0,0,1,6.92,6.92Z" transform="translate(-2.44 -2.21)"/>
+                  <rect style="filter: url(#glow); opacity: 0.75;" x="14.11" y="13.51" width="41.89" height="24.11" rx="5.11"/>
+                  <path style="filter: url(#glow);" d="M61.89,2.21H13.11A10.67,10.67,0,0,0,2.44,12.88V42.12A10.67,10.67,0,0,0,13.11,52.79H61.89A10.67,10.67,0,0,0,72.56,42.12V12.88A10.67,10.67,0,0,0,61.89,2.21Zm2.17,35.54a6.92,6.92,0,0,1-6.92,6.92H18a6.91,6.91,0,0,1-6.91-6.92V17.81A6.91,6.91,0,0,1,18,10.89H57.14a6.92,6.92,0,0,1,6.92,6.92Z" transform="translate(-2.44 -2.21)"/>
+                  <rect style="filter: url(#glow);" x="14.11" y="13.51" width="41.89" height="24.11" rx="5.11"/>
+                  <path d="M61.89,2.21H13.11A10.67,10.67,0,0,0,2.44,12.88V42.12A10.67,10.67,0,0,0,13.11,52.79H61.89A10.67,10.67,0,0,0,72.56,42.12V12.88A10.67,10.67,0,0,0,61.89,2.21Zm2.17,35.54a6.92,6.92,0,0,1-6.92,6.92H18a6.91,6.91,0,0,1-6.91-6.92V17.81A6.91,6.91,0,0,1,18,10.89H57.14a6.92,6.92,0,0,1,6.92,6.92Z" transform="translate(-2.44 -2.21)"/>
+                  <rect x="14.11" y="13.51" width="41.89" height="24.11" rx="5.11"/>
+                </svg>
               </div>
             </div>
-            <div class="selection-arrow">
-              <svg class="svg-selection-arrow rotate180 player-one-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
-                <path  d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+            <div class="selection-arrow">      
+              <svg class="svg-selection-arrow player-one-fill rotate180" style="filter: url(#glow); opacity: 0.75;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+              </svg>
+              <svg class="svg-selection-arrow player-one-fill rotate180" style="filter: url(#glow);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+              </svg>
+              <svg class="svg-selection-arrow player-one-fill rotate180"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
               </svg>
             </div>
           </div>
@@ -90,46 +135,87 @@
         <div class="player-selection-own-container">
             <div class="player-selection-type-wrapper">
               <div class="player-selection-type-container">
-                <div class="selection-arrow">
+                <div class="selection-arrow">      
+                  <svg class="svg-selection-arrow player-two-fill" style="filter: url(#glow); opacity: 0.75;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                    <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                  </svg>
+                  <svg class="svg-selection-arrow player-two-fill" style="filter: url(#glow);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                    <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                  </svg>
                   <svg class="svg-selection-arrow player-two-fill"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
-                      <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                    <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
                   </svg>
                 </div>
                 <div class="player-selection-type-box">
                   <div id="player-type-change-player-two" class="player-selection-type-items">
                     <div class="player-selection-type-item-container">
-                      <svg class="svg-selection-icon svg-icon-person player-two-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.85 100"><path  d="M28.45,61.53c-5.55,2.76-10.67,5.28-14.33,10.3a25.86,25.86,0,0,0-5,15.2V97.82A2.27,2.27,0,0,0,11.42,100H88.58a2.27,2.27,0,0,0,2.35-2.18V87a25.86,25.86,0,0,0-5.05-15.2c-3.66-5-8.78-7.54-14.33-10.3-3.57-1.78-6.89-4.37-8.5-7.75,10.27-4.54,17.37-14.26,17.37-25.53C80.42,12.65,66.8,0,50,0S19.58,12.65,19.58,28.25c0,11.27,7.1,21,17.37,25.53C35.34,57.16,32,59.75,28.45,61.53Z" transform="translate(-9.07)"/>
+                      <svg class="svg-selection-icon svg-icon-person player-two-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.85 100">
+                        <path style="filter: url(#glow); opacity: 0.75;" d="M28.45,61.53c-5.55,2.76-10.67,5.28-14.33,10.3a25.86,25.86,0,0,0-5,15.2V97.82A2.27,2.27,0,0,0,11.42,100H88.58a2.27,2.27,0,0,0,2.35-2.18V87a25.86,25.86,0,0,0-5.05-15.2c-3.66-5-8.78-7.54-14.33-10.3-3.57-1.78-6.89-4.37-8.5-7.75,10.27-4.54,17.37-14.26,17.37-25.53C80.42,12.65,66.8,0,50,0S19.58,12.65,19.58,28.25c0,11.27,7.1,21,17.37,25.53C35.34,57.16,32,59.75,28.45,61.53Z" transform="translate(-9.07)"/>
+                        <path style="filter: url(#glow);" d="M28.45,61.53c-5.55,2.76-10.67,5.28-14.33,10.3a25.86,25.86,0,0,0-5,15.2V97.82A2.27,2.27,0,0,0,11.42,100H88.58a2.27,2.27,0,0,0,2.35-2.18V87a25.86,25.86,0,0,0-5.05-15.2c-3.66-5-8.78-7.54-14.33-10.3-3.57-1.78-6.89-4.37-8.5-7.75,10.27-4.54,17.37-14.26,17.37-25.53C80.42,12.65,66.8,0,50,0S19.58,12.65,19.58,28.25c0,11.27,7.1,21,17.37,25.53C35.34,57.16,32,59.75,28.45,61.53Z" transform="translate(-9.07)"/>
+                        <path d="M28.45,61.53c-5.55,2.76-10.67,5.28-14.33,10.3a25.86,25.86,0,0,0-5,15.2V97.82A2.27,2.27,0,0,0,11.42,100H88.58a2.27,2.27,0,0,0,2.35-2.18V87a25.86,25.86,0,0,0-5.05-15.2c-3.66-5-8.78-7.54-14.33-10.3-3.57-1.78-6.89-4.37-8.5-7.75,10.27-4.54,17.37-14.26,17.37-25.53C80.42,12.65,66.8,0,50,0S19.58,12.65,19.58,28.25c0,11.27,7.1,21,17.37,25.53C35.34,57.16,32,59.75,28.45,61.53Z" transform="translate(-9.07)"/>
                       </svg>
                     </div>
                     <div class="player-selection-type-item-container">
-                      <svg class="svg-selection-icon svg-icon-computer player-two-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M25,13.33H6.25A6.47,6.47,0,0,0,0,20V93.33A6.47,6.47,0,0,0,6.25,100H25a6.46,6.46,0,0,0,6.25-6.67V20A6.47,6.47,0,0,0,25,13.33ZM9.38,80a3.34,3.34,0,0,1,0-6.67,3.34,3.34,0,0,1,0,6.67ZM25,40H6.25V33.33H25V40Zm0-13.33H6.25V20H25v6.67Z"/><path  d="M65.63,86.67V80H46.88v6.67a6.47,6.47,0,0,0-6.26,6.66H71.87A6.46,6.46,0,0,0,65.63,86.67Z"/><path  d="M93.75,0h-75A6.47,6.47,0,0,0,12.5,6.67H93.75V60H37.5V73.33H93.75A6.46,6.46,0,0,0,100,66.67v-60A6.47,6.47,0,0,0,93.75,0ZM56.25,70a3.34,3.34,0,1,1,3.13-3.33A3.23,3.23,0,0,1,56.25,70Z"/></svg>
+                      <svg class="svg-selection-icon svg-icon-computer player-two-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                        <path style="filter: url(#glow); opacity: 0.75;" d="M25,13.33H6.25A6.47,6.47,0,0,0,0,20V93.33A6.47,6.47,0,0,0,6.25,100H25a6.46,6.46,0,0,0,6.25-6.67V20A6.47,6.47,0,0,0,25,13.33ZM9.38,80a3.34,3.34,0,0,1,0-6.67,3.34,3.34,0,0,1,0,6.67ZM25,40H6.25V33.33H25V40Zm0-13.33H6.25V20H25v6.67Z"/>
+                        <path style="filter: url(#glow); opacity: 0.75;" d="M65.63,86.67V80H46.88v6.67a6.47,6.47,0,0,0-6.26,6.66H71.87A6.46,6.46,0,0,0,65.63,86.67Z"/>
+                        <path style="filter: url(#glow); opacity: 0.75;" d="M93.75,0h-75A6.47,6.47,0,0,0,12.5,6.67H93.75V60H37.5V73.33H93.75A6.46,6.46,0,0,0,100,66.67v-60A6.47,6.47,0,0,0,93.75,0ZM56.25,70a3.34,3.34,0,1,1,3.13-3.33A3.23,3.23,0,0,1,56.25,70Z"/>
+                        <path style="filter: url(#glow);" d="M25,13.33H6.25A6.47,6.47,0,0,0,0,20V93.33A6.47,6.47,0,0,0,6.25,100H25a6.46,6.46,0,0,0,6.25-6.67V20A6.47,6.47,0,0,0,25,13.33ZM9.38,80a3.34,3.34,0,0,1,0-6.67,3.34,3.34,0,0,1,0,6.67ZM25,40H6.25V33.33H25V40Zm0-13.33H6.25V20H25v6.67Z"/>
+                        <path style="filter: url(#glow);" d="M65.63,86.67V80H46.88v6.67a6.47,6.47,0,0,0-6.26,6.66H71.87A6.46,6.46,0,0,0,65.63,86.67Z"/>
+                        <path style="filter: url(#glow);" d="M93.75,0h-75A6.47,6.47,0,0,0,12.5,6.67H93.75V60H37.5V73.33H93.75A6.46,6.46,0,0,0,100,66.67v-60A6.47,6.47,0,0,0,93.75,0ZM56.25,70a3.34,3.34,0,1,1,3.13-3.33A3.23,3.23,0,0,1,56.25,70Z"/>
+                        <path d="M25,13.33H6.25A6.47,6.47,0,0,0,0,20V93.33A6.47,6.47,0,0,0,6.25,100H25a6.46,6.46,0,0,0,6.25-6.67V20A6.47,6.47,0,0,0,25,13.33ZM9.38,80a3.34,3.34,0,0,1,0-6.67,3.34,3.34,0,0,1,0,6.67ZM25,40H6.25V33.33H25V40Zm0-13.33H6.25V20H25v6.67Z"/>
+                        <path d="M65.63,86.67V80H46.88v6.67a6.47,6.47,0,0,0-6.26,6.66H71.87A6.46,6.46,0,0,0,65.63,86.67Z"/>
+                        <path d="M93.75,0h-75A6.47,6.47,0,0,0,12.5,6.67H93.75V60H37.5V73.33H93.75A6.46,6.46,0,0,0,100,66.67v-60A6.47,6.47,0,0,0,93.75,0ZM56.25,70a3.34,3.34,0,1,1,3.13-3.33A3.23,3.23,0,0,1,56.25,70Z"/>
+                      </svg>
                     </div>
                   </div>
                 </div>
-                <div class="selection-arrow">
-                  <svg class="svg-selection-arrow rotate180 player-two-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
-                    <path  d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                <div class="selection-arrow">      
+                  <svg class="svg-selection-arrow player-two-fill rotate180" style="filter: url(#glow); opacity: 0.75;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                    <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                  </svg>
+                  <svg class="svg-selection-arrow player-two-fill rotate180" style="filter: url(#glow);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                    <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                  </svg>
+                  <svg class="svg-selection-arrow player-two-fill rotate180"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                    <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
                   </svg>
                 </div>
               </div>
             </div>
             <div class="player-selection-color-container">
-              <div class="selection-arrow">
-                <svg class="svg-selection-arrow player-two-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
-                  <path  d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+              <div class="selection-arrow">      
+                <svg class="svg-selection-arrow player-two-fill" style="filter: url(#glow); opacity: 0.75;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-two-fill" style="filter: url(#glow);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-two-fill"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
                 </svg>
               </div>
               <div class="player-selection-colors-container">
                 <div class="player-selection-color-item">
-                    <svg id="color-display-player-two" class="svg-color-display" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.11 54.57">
-                      <rect x="2" y="2" width="70.11" height="50.57" rx="10.67"/>
-                      <rect x="10.61" y="10.67" width="53" height="33.78" rx="6.92"/>
-                    </svg>
+                  <svg id="color-display-player-two" class="svg-color-display" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70.11 50.57">
+                    <path style="filter: url(#glow); opacity: 0.75;" d="M61.89,2.21H13.11A10.67,10.67,0,0,0,2.44,12.88V42.12A10.67,10.67,0,0,0,13.11,52.79H61.89A10.67,10.67,0,0,0,72.56,42.12V12.88A10.67,10.67,0,0,0,61.89,2.21Zm2.17,35.54a6.92,6.92,0,0,1-6.92,6.92H18a6.91,6.91,0,0,1-6.91-6.92V17.81A6.91,6.91,0,0,1,18,10.89H57.14a6.92,6.92,0,0,1,6.92,6.92Z" transform="translate(-2.44 -2.21)"/>
+                    <rect style="filter: url(#glow); opacity: 0.75;" x="14.11" y="13.51" width="41.89" height="24.11" rx="5.11"/>
+                    <path style="filter: url(#glow);" d="M61.89,2.21H13.11A10.67,10.67,0,0,0,2.44,12.88V42.12A10.67,10.67,0,0,0,13.11,52.79H61.89A10.67,10.67,0,0,0,72.56,42.12V12.88A10.67,10.67,0,0,0,61.89,2.21Zm2.17,35.54a6.92,6.92,0,0,1-6.92,6.92H18a6.91,6.91,0,0,1-6.91-6.92V17.81A6.91,6.91,0,0,1,18,10.89H57.14a6.92,6.92,0,0,1,6.92,6.92Z" transform="translate(-2.44 -2.21)"/>
+                    <rect style="filter: url(#glow);" x="14.11" y="13.51" width="41.89" height="24.11" rx="5.11"/>
+                    <path d="M61.89,2.21H13.11A10.67,10.67,0,0,0,2.44,12.88V42.12A10.67,10.67,0,0,0,13.11,52.79H61.89A10.67,10.67,0,0,0,72.56,42.12V12.88A10.67,10.67,0,0,0,61.89,2.21Zm2.17,35.54a6.92,6.92,0,0,1-6.92,6.92H18a6.91,6.91,0,0,1-6.91-6.92V17.81A6.91,6.91,0,0,1,18,10.89H57.14a6.92,6.92,0,0,1,6.92,6.92Z" transform="translate(-2.44 -2.21)"/>
+                    <rect x="14.11" y="13.51" width="41.89" height="24.11" rx="5.11"/>
+                  </svg>
                 </div>
               </div>
-              <div class="selection-arrow">
-                <svg class="svg-selection-arrow rotate180 player-two-fill" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
-                  <path  d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+              <div class="selection-arrow">      
+                <svg class="svg-selection-arrow player-two-fill rotate180" style="filter: url(#glow); opacity: 0.75;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-two-fill rotate180" style="filter: url(#glow);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
+                </svg>
+                <svg class="svg-selection-arrow player-two-fill rotate180"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.45 292.36">
+                  <path d="M159.22,5.86a17.92,17.92,0,0,0-25.7,0L5.62,133.76a17.92,17.92,0,0,0,0,25.7l127.9,127.9a18.27,18.27,0,0,0,31.12-12.84V18.7A17.55,17.55,0,0,0,159.22,5.86Z" transform="translate(-0.19 -0.43)"/>
                 </svg>
               </div>
             </div>
@@ -137,14 +223,6 @@
               <div class="player-selection-name-static">
                 <svg class="svg-player-selection-name player-two-fill" height="50px">
                   <g>
-                    <defs>
-                      <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                        <feGaussianBlur stdDeviation="4" result="glow"/>
-                        <feMerge>
-                          <feMergeNode in="glow"/>
-                        </feMerge>
-                      </filter>
-                    </defs>
                     <text class="player-selection-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="70%">PLAYER ONE</text>
                     <text class="player-selection-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="70%">PLAYER ONE</text>
                     <text class="player-selection-player-text" text-anchor="middle" x="50%" y="70%">PLAYER ONE</text>
@@ -158,27 +236,16 @@
       <!-- END - Player Selection Window -->
       <!-- Game Over Window -->
       <div id="game-over-window" class="game-over-container show-container">
-        <div class="game-over-mark-container">
-          <svg id="svg-game-over-mark" class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
-            <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="4" result="glow"/>    
-            </filter>  
+        <div id="game-over-player-mark" class="game-over-mark-container">
+          <!-- <svg id="svg-game-over-mark" class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
             <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
             <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
             <circle class="mark-nought" cx="50%" cy="50%" r="30" />
-          </svg>
+          </svg> -->
         </div>
         <div class="">
           <svg id="svg-winner-static" class="player-one-fill game-over-static" height="50px">
             <g>
-              <defs>
-                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="4" result="glow"/>
-                  <feMerge>
-                    <feMergeNode in="glow"/>
-                  </feMerge>
-                </filter>
-              </defs>
               <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="70%">Winner</text>
               <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="70%">Winner</text>
               <text class="winner-player-text" text-anchor="middle" x="50%" y="70%">Winner</text>
@@ -188,14 +255,6 @@
         <div class="">
             <svg id="svg-winner-player" class="player-one-fill game-over-winner" height="50px">
               <g>
-                <defs>
-                  <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                    <feGaussianBlur stdDeviation="4" result="glow"/>
-                    <feMerge>
-                      <feMergeNode in="glow"/>
-                    </feMerge>
-                  </filter>
-                </defs>
                 <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="70%">Player 1</text>
                 <text class="winner-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="70%">Player 1</text>
                 <text class="winner-player-text" text-anchor="middle" x="50%" y="70%">Player 1</text>
@@ -203,7 +262,11 @@
             </svg>
           </div>         
         <div class="game-over-btns-container">
-          <div><button id="btn-game-over-close" class="btn-game">New Game</button></div>
+          <div>
+            <button id="btn-game-over-close" class="btn-game">
+              New Game
+            </button>
+          </div>
         </div>
       </div>
       <!-- END - Game over window -->
@@ -212,14 +275,6 @@
         <div id="display-current-player" class="current-player-display-container">
           <svg class="player-one-fill">
             <g>
-              <defs>
-                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="4" result="glow"/>
-                  <feMerge>
-                    <feMergeNode in="glow"/>
-                  </feMerge>
-                </filter>
-              </defs>
               <text class="current-player-text" text-anchor="middle" style="filter: url(#glow); opacity: 0.75;" x="50%" y="50%">Player 1</text>
               <text class="current-player-text" text-anchor="middle" style="filter: url(#glow);" x="50%" y="50%">Player 1</text>
               <text class="current-player-text" text-anchor="middle" x="50%" y="50%">Player 1</text>
@@ -231,43 +286,51 @@
         <div class="game-board-container">
           <!-- Color Options -->
           <div id="options-colors-window" class="options-color-wrapper">
-              <div class="options-color-container">
-                <div id="options-colors" class="options-color-btns-container">
-                  <div class="options-color-btn-container">
-                    <button type="button" class="btn-options-color"></button>
+            <div class="options-color-container">
+                <div class="options-color-background">
                   </div>
-                  <div class="options-color-btn-container">
-                    <button type="button" class="btn-options-color"></button>
-                  </div>
-                  <div class="options-color-btn-container">
-                    <button type="button" class="btn-options-color"></button>
-                  </div>
-                  <div class="options-color-btn-container">
-                    <button type="button" class="btn-options-color"></button>
-                  </div>
-                  <div class="options-color-btn-container">
-                    <button type="button" class="btn-options-color"></button>
-                  </div>
-                  <div class="options-color-btn-container">
-                    <button type="button" class="btn-options-color"></button>
-                  </div>
-                  <div class="options-color-btn-container">
-                    <button type="button" class="btn-options-color"></button>
-                  </div>
-                  <div class="options-color-btn-container">
-                    <button type="button" class="btn-options-color"></button>
-                  </div>
+              <div id="options-colors" class="options-color-btns-container">
+
+                <div class="options-color-btn-container">
+                  <button type="button" class="btn-options-color"></button>
                 </div>
-                <div class="options-color-controls-container">
-                  <div class="options-controls">
-                    <div class="options-controls-button">
-                      <button id="btn-close-options" type="button" class="btn-game"></button>
-                    </div>
+                <div class="options-color-btn-container">
+                  <button type="button" class="btn-options-color"></button>
+                </div>
+                <div class="options-color-btn-container">
+                  <button type="button" class="btn-options-color"></button>
+                </div>
+                <div class="options-color-btn-container">
+                  <button type="button" class="btn-options-color"></button>
+                </div>
+                <div class="options-color-btn-container">
+                  <button type="button" class="btn-options-color"></button>
+                </div>
+                <div class="options-color-btn-container">
+                  <button type="button" class="btn-options-color"></button>
+                </div>
+                <div class="options-color-btn-container">
+                  <button type="button" class="btn-options-color"></button>
+                </div>
+                <div class="options-color-btn-container">
+                  <button type="button" class="btn-options-color"></button>
+                </div>
+              </div>
+              <div class="options-color-controls-container">
+                <div class="options-controls">
+                  <div class="options-controls-button">
+                    <button id="btn-close-options" type="button" class="btn-options">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="svg-btn-close" viewBox="0 0 99.26 99.26">
+                        <path class="cls-1" d="M50,.87A49.13,49.13,0,1,0,99.13,50,49.13,49.13,0,0,0,50,.87Zm0,89.77A40.64,40.64,0,1,1,90.64,50,40.65,40.65,0,0,1,50,90.64Z" transform="translate(-0.37 -0.37)"/>
+                        <polygon class="cls-2" points="78.22 28.11 71.15 21.04 49.63 42.56 28.11 21.04 21.04 28.11 42.56 49.63 21.04 71.15 28.11 78.22 49.63 56.7 71.15 78.22 78.22 71.15 56.7 49.63 78.22 28.11"/>
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- END Color Options-->
+          </div>
+          <!-- END Color Options-->
           <!-- Tic Tac Toe Grid -->
           <div id="game-grid" class="tictactoe-grid">
             <svg id="svg-game-grid" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" >
@@ -313,18 +376,6 @@
         </div>
         <!-- END Game Buttons Container -->
       </div>
-      <!-- Icons for design 
-        NEW SVG ICON. REPLACE OTHER ICONS WITH THIS ONE WHEN READY
-        <svg class="player-one" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" >
-          <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="4" result="glow"/>    
-          </filter>  
-          <circle class="mark-nought" cx="50" cy="50" r="30" opacity=".4" filter="url(#glow)"/>
-          <circle class="mark-nought" cx="50" cy="50" r="30" filter="url(#glow)"/>
-          <circle class="mark-nought" cx="50" cy="50" r="30" />
-        </svg>
-        --------------
-    -->
     </div>
   </div>
 </body>
