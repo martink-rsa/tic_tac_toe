@@ -48,6 +48,10 @@ button:focus {
   width: 0;
 }
 
+.svg-mark {
+  pointer-events: none;
+}
+
 /* IMPORTANT: Need to check if `align-items:center;` is needed */
 .document-wrapper {
   display: flex;
@@ -351,6 +355,10 @@ button:focus {
 
 .enable-pointers {
   pointer-events: auto;
+}
+
+.hide {
+  opacity: 0;
 }
 
 .show-container {
@@ -675,6 +683,10 @@ button:focus {
   }
 }
 
+.game-mark {
+  transition: opacity 750ms ease-out;
+}
+
 .mark-nought {
   display: block;
   fill: transparent;
@@ -753,9 +765,6 @@ button:focus {
   stroke-dashoffset: 0;
 }
 
-.svg-mark {
-  pointer-events: none;
-}
 
 /* VERY COOL ANIMATION But not what's needed... 
 .player-one-mark {

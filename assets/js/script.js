@@ -99,6 +99,14 @@ const GameBoard = (() => {
   const getPresetColors = () => _presetColors;
   const setPresetColors = (newColors) => { _presetColors = newColors; };
 
+  const enableActions = () => {
+
+  };
+
+  const disableActions = () => {
+
+  };
+
   const animateGridLines = () => {
     const gameGrid = document.getElementById('svg-game-grid').getElementsByTagName('line');
     for (let i = 0; i < gameGrid.length; i += 1) {
@@ -249,6 +257,14 @@ const GameBoard = (() => {
     }
   };
 
+  const resetMarks = () => {
+    const marksVisible = document.getElementsByClassName('game-mark');
+    console.log(marksVisible.length);
+    for (let i = 0; i < marksVisible.length; i += 1) {
+      marksVisible[i].classList.add('hide');
+      console.log(marksVisible[i].classList);
+    }
+  }
   const setWinnerElement = (player) => {
     // Create correct Mark SVG (O or X)
     // Set correct text to text SVG
@@ -479,8 +495,12 @@ const GameBoard = (() => {
   };
 
   const toggleTest2 = () => {
-    const winLine = document.getElementById('win-line');
-    winLine.classList.toggle('animate-win-line');
+    const marksVisible = document.getElementsByClassName('game-mark');
+    console.log(marksVisible.length);
+    for (let i = 0; i < marksVisible.length; i += 1) {
+      marksVisible[i].classList.toggle('hide');
+      console.log(marksVisible[i].classList);
+    }
   };
 
   // Change Gameboard text and text colour for current player
@@ -489,6 +509,7 @@ const GameBoard = (() => {
     const displaySVG = displayElement.getElementsByTagName('svg');
     const displayText = displayElement.getElementsByTagName('text');
     const playerIndex = GameMain.getPlayers().indexOf(player);
+
     if (playerIndex === 0) {
       displaySVG[0].classList.add('player-one-fill');
       displaySVG[0].classList.remove('player-two-fill');
@@ -498,6 +519,15 @@ const GameBoard = (() => {
     }
     for (let i = 0; i < displayText.length; i += 1) {
       displayText[i].textContent = player.getName();
+    }
+  };
+
+  const displayDraw = () => {
+    const displayElement = document.getElementById('display-current-player');
+    const displayText = displayElement.getElementsByTagName('text');
+
+    for (let i = 0; i < displayText.length; i += 1) {
+      displayText[i].textContent = 'DRAW';
     }
   };
 
@@ -535,9 +565,9 @@ const GameBoard = (() => {
       // IMPORTANT! GENERATE THE DIVS, DON'T USE INNERHTML YOU GOOP
       currentContainer = _gridElements[i];
       if (marks[i].toLowerCase() === 'o') {
-        currentContainer.innerHTML = `<svg class="${noughtClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><circle style="filter: url(#glow); opacity: 0.75;" class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/><circle class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/></g></svg>`;
+        currentContainer.innerHTML = `<svg class="game-mark ${noughtClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><circle style="filter: url(#glow); opacity: 0.75;" class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/><circle class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/></g></svg>`;
       } else if (marks[i].toLowerCase() === 'x') {
-        currentContainer.innerHTML = `<svg class="${crossClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><line style="filter: url(#glow); opacity: 0.75;" class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"/><line style="filter: url(#glow);" class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80"/><line class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"  /><line class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80" /></g></svg>`;
+        currentContainer.innerHTML = `<svg class="game-mark ${crossClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><line style="filter: url(#glow); opacity: 0.75;" class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"/><line style="filter: url(#glow);" class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80"/><line class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"  /><line class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80" /></g></svg>`;
       } else {
         currentContainer.innerHTML = '';
       }
@@ -589,9 +619,12 @@ const GameBoard = (() => {
   return {
     update: updateGameBoard,
     init: initGrid,
+    enableActions,
+    disableActions,
     toggleTest,
     toggleTest2,
     displayPlayer,
+    displayDraw,
     closeGameOverWindow,
     allocateDisplayState,
     drawWinLine,
@@ -602,6 +635,7 @@ const GameBoard = (() => {
     openOptionsWindow,
     closeOptionsWindow,
     changePlayerColor,
+    resetMarks,
   };
 })();
 
@@ -882,11 +916,12 @@ const GameMain = (() => {
     GameBoard.displayPlayer(currentPlayer);
     // Last round: End of game
     if (getCurrentTurn() === getGrid().flat().length) {
-      // [CONTINUE HERE]
       // Change current player display to state "DRAW"
       // Animate the marks disappearing
+      console.log('DRAW STATE');
+      GameBoard.displayDraw();
       setTimeout(() => {
-        GameMain.resetGame();
+        GameMain.resetGameAndMarks();
       }, 3000);
     } else {
       console.log(`Current round is: ${(getCurrentTurn() + 1)}`);
@@ -926,12 +961,20 @@ const GameMain = (() => {
     setGameOver(false);
   };
 
+  const resetGameAndMarks = () => {
+    GameBoard.resetMarks();
+    setTimeout(() => {
+      resetGame();
+    }, 2000);
+  };
+
   return {
     newGame,
     getGrid,
     drawMark,
     playTurn,
     resetGame,
+    resetGameAndMarks,
     getPlayers,
     getCurrentPlayer,
     getPlayerIndex,
@@ -970,15 +1013,13 @@ document.getElementById('btn-start-game').addEventListener('click', () => {
   GameMain.newGame(playerOne, playerTwo);
   GameBoard.allocateDisplayState('gameboard');
 });
-// document.getElementById('btn-start-game').addEventListener('click', () => { GameBoard.allocateDisplayState('gameboard'); });
 
 // Gameboard Screen
 document.getElementById('btn-test-2').addEventListener('click', () => { GameBoard.toggleTest2(); });
-document.getElementById('btn-reset-game').addEventListener('click', () => { GameMain.resetGame(); });
+document.getElementById('btn-reset-game').addEventListener('click', () => { GameMain.resetGameAndMarks(); });
 
 document.getElementById('btn-open-options').addEventListener('click', () => { GameBoard.openOptionsWindow(); });
 document.getElementById('btn-close-options').addEventListener('click', () => { GameBoard.closeOptionsWindow(); });
-
 
 // Game Over Screen
 document.getElementById('btn-game-over-close').addEventListener('click', () => { GameBoard.closeGameOverWindow(); });
