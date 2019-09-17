@@ -6,23 +6,18 @@
 // https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript?ref=lnav
 
 // TO-DO:
-// - Change Player Two text on player selection window
 // - Color Options Window:
 // --- Add separate delay to buttons
-// - Create minmax AI
 // - SVG implementation needs rework:
 // --- Added #glow filter but can't seem to apply it to custom AI designs
-// --- Find a way to eliminate the ids that repeat
-// - Prevent clicking of game squares that are occupied/can't be played
-// --- Disable all game squares while computer is playing.
+
 
 // ISSUES:
+// - IMPORTANT! Need to renable clicking for Human vs Human game
 // - IMPORTANT! Need side container for mobile view
 // - IMPORTANT! DON'T USE INNERHTML TO CREATE SVGS. BAD PRACTICE AND SECURITY RISK.
 //      Create the SVGs in run time. This is already being implemented elsewhere.
 // - IMPORTANT! CAN'T ADD THE GLOW TO THE SELECTION WINDOW. FIX!
-// - IMPORTANT! Changed the Selection UI completely, possibly leaving some artefacts.
-//      Need to clean up.
 // - Buttons must be turned into real buttons
 // - Need to sort out Z-indexes so there is a proper system in place. ATM just increasing the amount
 //      significantly as to ensure the element is on top.
@@ -67,7 +62,6 @@ const Player = (name, mark, type, level, color, colorIndex) => {
     _colorValue = newColorArray[1];
   };
 
-
   return Object.freeze({
     getName,
     setName,
@@ -87,24 +81,48 @@ const Player = (name, mark, type, level, color, colorIndex) => {
 };
 
 const playerOne = Player('Player 1', 'o', 'player', 'easy', 'rgb(247, 21, 247)', 0);
-const playerTwo = Player('Player 2', 'x', 'computer', 'hard', 'rgb(49, 214, 255)', 1);
+const playerTwo = Player('Player 2', 'x', 'player', 'easy', 'rgb(49, 214, 255)', 1);
 
 console.log(playerTwo.getLevel());
 
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
-
   let _presetColors = ['rgb(247, 21, 247)', 'rgb(49, 214, 255)', 'rgb(247, 250, 252)', 'rgb(234, 255, 49)', 'rgb(255, 179, 15)', 'rgb(255, 49, 59)', 'rgb(49, 255, 83)', 'rgb(169, 39, 255)'];
+  
+  const typeControllers = {
+    playerOneTypeIndex: 0,
+    playerOneTypeTranslate: 0,
+    playerTwoTypeIndex: 0,
+    playerTwoTypeTranslate: 0,
+  };
+
+
 
   const getPresetColors = () => _presetColors;
   const setPresetColors = (newColors) => { _presetColors = newColors; };
 
   const enableActions = () => {
+    const gameBoard = document.getElementById('game-board');
+    const btnReset = document.getElementById('btn-reset-game');
+    const btnOptions = document.getElementById('btn-option-options');
 
+    gameBoard.classList.remove('disable-events');
+    btnReset.classList.remove('disable-events');
+  
+    // Disable game board
+    // - Disable reset
+    
+    //--
+    // Allow Colour change
   };
 
   const disableActions = () => {
+    const gameBoard = document.getElementById('game-board');
+    const btnReset = document.getElementById('btn-reset-game');
+    const btnOptions = document.getElementById('btn-option-options');
 
+    gameBoard.classList.add('disable-events');
+    btnReset.classList.add('disable-events');
   };
 
   const animateGridLines = () => {
@@ -114,15 +132,34 @@ const GameBoard = (() => {
     }
   };
 
+  const animateGridStroke = (player) => {
+    console.log('animate Grid Stroke');
+    const gameGrid = document.getElementById('svg-game-grid').getElementsByTagName('line');
+    console.log(gameGrid);
+    let strokeColor;
+    console.log(player);
+    console.log(GameMain.getPlayerIndex(player));
+    if (GameMain.getPlayerIndex(player) === 0) {
+      strokeColor = 'player-one';
+    } else if (GameMain.getPlayerIndex(player) === 1) {
+      strokeColor = 'player-two';
+    } 
+    for (let i = 0; i < gameGrid.length; i += 1) {
+      gameGrid[i].classList.add('gridline-transition-stroke-delay');
+      gameGrid[i].classList.add(strokeColor);
+      setTimeout(() => {
+        gameGrid[i].classList.remove(strokeColor);
+        setTimeout(() => {
+          gameGrid[i].classList.remove('gridline-transition-stroke-delay');
+        }, 10);
+      }, 750);
+    }
+
+  };
+
   const animateGameOver = (showFlag) => {
     const staticText = document.getElementById('svg-winner-static');
     const playerText = document.getElementById('svg-winner-player');
-
-    //  <svg id="svg-game-over-mark" class="player-one game-over-mark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 90">
-    //   <circle class="mark-nought" cx="50%" cy="50%" r="30" opacity=".4" filter="url(#glow)"/>
-    //   <circle class="mark-nought" cx="50%" cy="50%" r="30" filter="url(#glow)"/>
-    //   <circle class="mark-nought" cx="50%" cy="50%" r="30" />
-    // </svg>
 
     if (showFlag) {
       const svgContainer = document.getElementById('game-over-player-mark');
@@ -295,15 +332,38 @@ const GameBoard = (() => {
       toggleDisplayState(gameSelection, false);
       deleteWinLine();
       animateGameOver(false);
+      setTimeout(() => { enableActions(); console.log('GO!'); }, 850);
     } if (displayState.toLowerCase() === 'gameover') {
       animateGridLines();
       toggleDisplayState(gameBoard, false);
       setTimeout(() => { toggleDisplayState(gameOver, true); }, 800);
       setTimeout(() => { animateGameOver(true); }, 1000);
     } if (displayState.toLowerCase() === 'playerselection') {
+      disableActions();
       toggleDisplayState(gameSelection, true);
       toggleDisplayState(gameBoard, false);
       toggleDisplayState(gameOver, false);
+    }
+  };
+
+  const allocatePlayerType = (player) => {
+    let controlIndex;
+    if(GameMain.getPlayerIndex(player) === 0) {
+      controlIndex = typeControllers.playerOneTypeIndex;
+    } else if (GameMain.getPlayerIndex(player) === 1) {
+      controlIndex = typeControllers.playerTwoTypeIndex;
+    }
+
+    console.log('allocatePlayerType: Control index: ' + controlIndex);
+
+    if (controlIndex === 0) {
+      player.setType('player');
+    } else if (controlIndex === 1) {
+      player.setType('computer');
+      player.setLevel('easy');
+    } if (controlIndex === 2) {
+      player.setType('computer');
+      player.setLevel('hard');
     }
   };
 
@@ -317,21 +377,49 @@ const GameBoard = (() => {
     const optionsWindow = document.getElementById('options-colors-window');
     toggleDisplayState(optionsWindow, false);
   };
-
+  
   const changePlayerType = (player, direction) => {
     let imageRow;
+    const imageSize = 79;
     const players = GameMain.getPlayers();
     const playerIndex = players.indexOf(player);
+    const maxOptions = 3;
+    let currentIndex;
+    let calcTranslate;
+
     if (playerIndex === 0) {
       imageRow = document.getElementById('player-type-change-player-one');
+      currentIndex = typeControllers.playerOneTypeIndex;
+      calcTranslate = typeControllers.playerOneTypeTranslate;
     } else if (playerIndex === 1) {
       imageRow = document.getElementById('player-type-change-player-two');
+      currentIndex = typeControllers.playerTwoTypeIndex;
+      calcTranslate = typeControllers.playerTwoTypeTranslate;
     }
+
     if (direction === 'left') {
-      imageRow.classList.toggle('type-move-left');
+      if (currentIndex > 0) {
+        currentIndex -= 1;
+        calcTranslate += imageSize;
+        imageRow.style.transform = `translateX(${calcTranslate}px)`;
+
+      }
     } else if (direction === 'right') {
-      imageRow.classList.toggle('type-move-left');
+      if (currentIndex < maxOptions - 1) {
+        currentIndex += 1;
+        calcTranslate -= imageSize;
+        imageRow.style.transform = `translateX(${calcTranslate}px)`;
+      }
     }
+
+    if (playerIndex === 0) {
+      typeControllers.playerOneTypeTranslate = calcTranslate;
+      typeControllers.playerOneTypeIndex = currentIndex;
+    } else if (playerIndex === 1) {
+      typeControllers.playerTwoTypeTranslate = calcTranslate;
+      typeControllers.playerTwoTypeIndex = currentIndex;
+    }
+    allocatePlayerType(player, currentIndex);
   };
 
   const changePlayerColor = (currentColorIndex) => {
@@ -395,7 +483,6 @@ const GameBoard = (() => {
     }
 
     // switch (index) {
-
     //   case 0:
     //     console.log('0');
     //     break;
@@ -495,12 +582,7 @@ const GameBoard = (() => {
   };
 
   const toggleTest2 = () => {
-    const marksVisible = document.getElementsByClassName('game-mark');
-    console.log(marksVisible.length);
-    for (let i = 0; i < marksVisible.length; i += 1) {
-      marksVisible[i].classList.toggle('hide');
-      console.log(marksVisible[i].classList);
-    }
+    animateGridStroke(GameMain.getCurrentPlayer());
   };
 
   // Change Gameboard text and text colour for current player
@@ -525,10 +607,14 @@ const GameBoard = (() => {
   const displayDraw = () => {
     const displayElement = document.getElementById('display-current-player');
     const displayText = displayElement.getElementsByTagName('text');
-
+    const players = GameMain.getPlayers();
     for (let i = 0; i < displayText.length; i += 1) {
       displayText[i].textContent = 'DRAW';
     }
+    setTimeout(() => {
+      displayPlayer(players[0]);
+    }, 3000);
+
   };
 
   const updateGameBoard = (gridMarks, positionPlayed) => {
@@ -565,9 +651,9 @@ const GameBoard = (() => {
       // IMPORTANT! GENERATE THE DIVS, DON'T USE INNERHTML YOU GOOP
       currentContainer = _gridElements[i];
       if (marks[i].toLowerCase() === 'o') {
-        currentContainer.innerHTML = `<svg class="game-mark ${noughtClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><circle style="filter: url(#glow); opacity: 0.75;" class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/><circle class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/></g></svg>`;
+        currentContainer.innerHTML = `<svg class="game-mark disable-events ${noughtClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><circle style="filter: url(#glow); opacity: 0.75;" class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/><circle class="nought ${currentPositionClass}" cx="50" cy="50" r="30"/></g></svg>`;
       } else if (marks[i].toLowerCase() === 'x') {
-        currentContainer.innerHTML = `<svg class="game-mark ${crossClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><line style="filter: url(#glow); opacity: 0.75;" class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"/><line style="filter: url(#glow);" class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80"/><line class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"  /><line class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80" /></g></svg>`;
+        currentContainer.innerHTML = `<svg class="game-mark disable-events ${crossClass}" height="100" width="100" viewBox="0 0 100 100"><g><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4 4" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="glow"/><feMergeNode in="glow"/></feMerge></filter></defs><line style="filter: url(#glow); opacity: 0.75;" class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"/><line style="filter: url(#glow);" class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80"/><line class="cross ${currentPositionClass}" x1="20" y1="20" x2="80" y2="80"  /><line class="cross cross-delay ${currentPositionClass}" x1="80" y1="20" x2="20" y2="80" /></g></svg>`;
       } else {
         currentContainer.innerHTML = '';
       }
@@ -597,6 +683,7 @@ const GameBoard = (() => {
     const grid = GameMain.getGrid().flat();
     if (grid[positionPlayed] === '') {
       GameMain.playTurn(positionPlayed);
+      GameBoard.disableActions();
     }
   };
 
@@ -636,6 +723,8 @@ const GameBoard = (() => {
     closeOptionsWindow,
     changePlayerColor,
     resetMarks,
+    animateGridStroke,
+    allocatePlayerType,
   };
 })();
 
@@ -727,32 +816,35 @@ const ComputerAI = (() => {
     return moves[bestMove];
   }
 
-  const computePosition = (grid) => {
+  const computePosition = (grid, player) => {
+    // Pass next player
     const gridFilled = fillGrid(grid.flat());
-    const bestSpot = minimax(gridFilled, computerPlayer);
-    return bestSpot.index;
+    const currentPlayer = player;
+    const players = GameMain.getPlayers();
+
+    if (currentPlayer.getLevel() === 'easy') {
+      const positionsAvailable = [];
+      const gridFlattened = grid.flat();
+      console.log(gridFlattened);
+      for (let i = 0; i < gridFlattened.length; i += 1) {
+        if (gridFlattened[i] === '') {
+          positionsAvailable.push(i);
+        }
+      }
+      const randNum = generateRandNum(0, positionsAvailable.length - 1);
+      const positionChosen = positionsAvailable[randNum];
+      return positionChosen;
+
+    } else if (currentPlayer.getLevel() === 'hard') {
+      const bestSpot = minimax(gridFilled, computerPlayer);
+      return bestSpot.index;
+    }
   };
 
   return {
     computePosition,
   };
 })();
-
-
-// Random position chooser for Easy mode.
-
-/*   const computePosition = (grid) => {
-  const positionsAvailable = [];
-  const gridFlattened = grid.flat();
-  for (let i = 0; i < gridFlattened.length; i += 1) {
-    if (gridFlattened[i] === '') {
-      positionsAvailable.push(i);
-    }
-  }
-  const randNum = generateRandNum(0, positionsAvailable.length - 1);
-  const positionChosen = positionsAvailable[randNum];
-  return positionChosen;
-}; */
 
 const GameMain = (() => {
   let _grid = [['', '', ''], ['', '', ''], ['', '', '']];
@@ -789,13 +881,22 @@ const GameMain = (() => {
 
   const getCurrentPlayer = () => {
     const players = getPlayers();
-    const playerIndex = ((getCurrentTurn() - 1) % players.length);
+    let playerIndex = ((getCurrentTurn() - 1) % players.length);
+    if (playerIndex < 0) {
+      playerIndex = 0;
+    }
     return players[playerIndex];
   };
 
   const getPlayerIndex = (player) => {
     const players = getPlayers();
     return players.indexOf(player);
+  };
+
+  const configPlayers = (playerOneTemp, playerTwoTemp) => {
+    GameBoard.allocatePlayerType(playerOneTemp);
+    GameBoard.allocatePlayerType(playerTwoTemp);
+    newGame(playerOne, playerTwo);
   };
 
   const newGame = (...players) => {
@@ -807,10 +908,12 @@ const GameMain = (() => {
   };
 
   const drawMark = (positionPlayed, currentPlayer) => {
+    console.log({ positionPlayed });
     const row = parseInt(positionPlayed / 3, 10);
     const column = positionPlayed % 3;
     _grid[row][column] = currentPlayer.getMark();
     GameBoard.update(GameMain.getGrid(), positionPlayed);
+    GameBoard.animateGridStroke(currentPlayer);
   };
 
   // MIN MAX WIN CONDITION CHECKER
@@ -898,11 +1001,11 @@ const GameMain = (() => {
     return false;
   };
 
-  const gameEnd = (winner) => {
+  const gameEnd = () => {
     GameBoard.allocateDisplayState('gameover', true);
   };
 
-  const newTurn = (player) => {
+  const newTurn = () => {
     _currentTurn += 1;
   };
 
@@ -942,14 +1045,23 @@ const GameMain = (() => {
       // Can't wait for the Computer to click an element
       // and must force the next turn with the computer's choice.
       if (nextPlayer.getType().toLowerCase() === 'computer' && !isGameOver()) {
+        console.log('Disable Actions');
+
         setTimeout(() => {
-          playTurn(ComputerAI.computePosition(getGrid()));
-        }, 1000);
+          console.log('NEW TURN ------');
+          console.log(currentPlayer.getName());
+          playTurn(ComputerAI.computePosition(getGrid(), nextPlayer));
+        }, 1500);
       }
       if (currentPlayer.getType().toLowerCase() === 'computer' && !isGameOver()) {
         setTimeout(() => {
           GameBoard.displayPlayer(nextPlayer);
-        }, 1000);
+          GameBoard.enableActions();
+        }, 1500);
+      }
+      if (nextPlayer.getType() === 'player') {
+        console.log('Enable Actions');
+        // GameBoard.enableActions();
       }
     }
   };
@@ -969,6 +1081,7 @@ const GameMain = (() => {
   };
 
   return {
+    configPlayers,
     newGame,
     getGrid,
     drawMark,
@@ -1010,7 +1123,7 @@ for (let i = 0; i < selectionArrows.length; i += 1) {
 
 // Selection Screen
 document.getElementById('btn-start-game').addEventListener('click', () => {
-  GameMain.newGame(playerOne, playerTwo);
+  GameMain.configPlayers(playerOne, playerTwo);
   GameBoard.allocateDisplayState('gameboard');
 });
 

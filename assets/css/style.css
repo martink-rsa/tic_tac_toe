@@ -34,7 +34,7 @@ button:focus {
   outline: none; 
 }
 
-.disable-select{
+.disable-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -48,7 +48,7 @@ button:focus {
   width: 0;
 }
 
-.svg-mark {
+.disable-events, .svg-mark {
   pointer-events: none;
 }
 
@@ -155,9 +155,12 @@ button:focus {
 }
 
 .player-selection-type-box {
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
   height: 75px;
   width: 75px;
-  margin: 0 8px;
+  margin: 0;
   /*border: px solid var(--player-one);*/
   overflow: hidden;
 }
@@ -510,12 +513,18 @@ button:focus {
   stroke-linecap: round;
   stroke-dashoffset: -310;
   stroke-dasharray: 310;
-  -webkit-transition: all 2s ease;
-  -moz-transition: all 2s ease;
-  -ms-transition: all 2s ease;
-  -o-transition: all 2s ease;
-  transition: all 2s ease;
+  -webkit-transition: stroke-dashoffset 2s ease;
+  -moz-transition: stroke-dashoffset 2s ease;
+  -ms-transition: stroke-dashoffset 2s ease;
+  -o-transition: stroke-dashoffset 2s ease;
+  transition: stroke-dashoffset 2s ease;
+  -webkit-transition: stroke 700ms ease-in-out;
+  -moz-transition: stroke 700ms ease-in-out;
+  -ms-transition: stroke 700ms ease-in-out;
+  -o-transition: stroke 700ms ease-in-out;
+  transition: stroke 700ms ease-in-out;
 }
+
 
 .grid-line-draw{
   stroke-dashoffset: 0;
@@ -552,6 +561,15 @@ button:focus {
   -ms-transition-delay: 700ms;
   -o-transition-delay: 700ms;
   transition-delay: 700ms;
+}
+
+.gridline-transition-stroke-delay {
+  -webkit-transition-delay: 0ms;
+  -moz-transition-delay: 0ms;
+  -ms-transition-delay: 0ms;
+  -o-transition-delay: 0ms; 
+  transition-delay: 0ms;
+  filter: brightness(90%);
 }
 
 /* ANIMATED WIN LINE */
@@ -700,7 +718,7 @@ button:focus {
   animation-name: nought-animation;
   animation-duration: 1.2s;
   animation-timing-function: ease-in-out;
-  animation-delay: 0;
+  animation-delay: 0ms;
   animation-iteration-count: 1;
   animation-direction: normal;
 }
