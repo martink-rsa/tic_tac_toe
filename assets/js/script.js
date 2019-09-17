@@ -13,6 +13,7 @@
 
 
 // ISSUES:
+// - DRAW SCREEN IS NOT APPEARING FOR PC VS. PC
 // - IMPORTANT! Need to renable clicking for Human vs Human game
 // - IMPORTANT! Need side container for mobile view
 // - IMPORTANT! DON'T USE INNERHTML TO CREATE SVGS. BAD PRACTICE AND SECURITY RISK.
@@ -83,8 +84,6 @@ const Player = (name, mark, type, level, color, colorIndex) => {
 const playerOne = Player('Player 1', 'o', 'player', 'easy', 'rgb(247, 21, 247)', 0);
 const playerTwo = Player('Player 2', 'x', 'player', 'easy', 'rgb(49, 214, 255)', 1);
 
-console.log(playerTwo.getLevel());
-
 const GameBoard = (() => {
   const _gridElements = document.getElementsByClassName('mark-container');
   let _presetColors = ['rgb(247, 21, 247)', 'rgb(49, 214, 255)', 'rgb(247, 250, 252)', 'rgb(234, 255, 49)', 'rgb(255, 179, 15)', 'rgb(255, 49, 59)', 'rgb(49, 255, 83)', 'rgb(169, 39, 255)'];
@@ -133,12 +132,8 @@ const GameBoard = (() => {
   };
 
   const animateGridStroke = (player) => {
-    console.log('animate Grid Stroke');
     const gameGrid = document.getElementById('svg-game-grid').getElementsByTagName('line');
-    console.log(gameGrid);
     let strokeColor;
-    console.log(player);
-    console.log(GameMain.getPlayerIndex(player));
     if (GameMain.getPlayerIndex(player) === 0) {
       strokeColor = 'player-one';
     } else if (GameMain.getPlayerIndex(player) === 1) {
@@ -296,10 +291,8 @@ const GameBoard = (() => {
 
   const resetMarks = () => {
     const marksVisible = document.getElementsByClassName('game-mark');
-    console.log(marksVisible.length);
     for (let i = 0; i < marksVisible.length; i += 1) {
       marksVisible[i].classList.add('hide');
-      console.log(marksVisible[i].classList);
     }
   }
   const setWinnerElement = (player) => {
@@ -332,7 +325,7 @@ const GameBoard = (() => {
       toggleDisplayState(gameSelection, false);
       deleteWinLine();
       animateGameOver(false);
-      setTimeout(() => { enableActions(); console.log('GO!'); }, 850);
+      setTimeout(() => { enableActions(); }, 850);
     } if (displayState.toLowerCase() === 'gameover') {
       animateGridLines();
       toggleDisplayState(gameBoard, false);
@@ -354,7 +347,6 @@ const GameBoard = (() => {
       controlIndex = typeControllers.playerTwoTypeIndex;
     }
 
-    console.log('allocatePlayerType: Control index: ' + controlIndex);
 
     if (controlIndex === 0) {
       player.setType('player');
@@ -679,11 +671,15 @@ const GameBoard = (() => {
   };
 
   const gameElementClicked = (e) => {
+    const nextPlayerIndex = (GameMain.getCurrentTurn() + 1) % GameMain.getPlayers().length;
+    const players = GameMain.getPlayers();
     const positionPlayed = e.target.getAttribute('data-value');
     const grid = GameMain.getGrid().flat();
     if (grid[positionPlayed] === '') {
       GameMain.playTurn(positionPlayed);
-      GameBoard.disableActions();
+      if (players[nextPlayerIndex].getType() === 'computer') {
+        GameBoard.disableActions();
+      }
     }
   };
 
@@ -825,7 +821,6 @@ const ComputerAI = (() => {
     if (currentPlayer.getLevel() === 'easy') {
       const positionsAvailable = [];
       const gridFlattened = grid.flat();
-      console.log(gridFlattened);
       for (let i = 0; i < gridFlattened.length; i += 1) {
         if (gridFlattened[i] === '') {
           positionsAvailable.push(i);
@@ -905,10 +900,17 @@ const GameMain = (() => {
       newPlayers.push(players[i]);
     }
     setPlayers(newPlayers);
+    const storedPlayers = getPlayers();
+    if (storedPlayers[0].getType() === 'computer') {
+      const nextPlayerIndex = (getCurrentTurn() + 1) % getPlayers().length;
+      const nextPlayer = players[nextPlayerIndex];
+      setTimeout(() => {
+        GameMain.playTurn(ComputerAI.computePosition(getGrid(), nextPlayer));
+      }, 1500);
+    }
   };
 
   const drawMark = (positionPlayed, currentPlayer) => {
-    console.log({ positionPlayed });
     const row = parseInt(positionPlayed / 3, 10);
     const column = positionPlayed % 3;
     _grid[row][column] = currentPlayer.getMark();
@@ -1021,13 +1023,12 @@ const GameMain = (() => {
     if (getCurrentTurn() === getGrid().flat().length) {
       // Change current player display to state "DRAW"
       // Animate the marks disappearing
-      console.log('DRAW STATE');
       GameBoard.displayDraw();
       setTimeout(() => {
         GameMain.resetGameAndMarks();
       }, 3000);
     } else {
-      console.log(`Current round is: ${(getCurrentTurn() + 1)}`);
+      // console.log(`Current round is (+1): ${(getCurrentTurn() + 1)}`);
       drawMark(positionPlayed, currentPlayer);
 
       if (checkWinConditions(currentPlayer)) {
@@ -1045,11 +1046,7 @@ const GameMain = (() => {
       // Can't wait for the Computer to click an element
       // and must force the next turn with the computer's choice.
       if (nextPlayer.getType().toLowerCase() === 'computer' && !isGameOver()) {
-        console.log('Disable Actions');
-
         setTimeout(() => {
-          console.log('NEW TURN ------');
-          console.log(currentPlayer.getName());
           playTurn(ComputerAI.computePosition(getGrid(), nextPlayer));
         }, 1500);
       }
@@ -1060,7 +1057,6 @@ const GameMain = (() => {
         }, 1500);
       }
       if (nextPlayer.getType() === 'player') {
-        console.log('Enable Actions');
         // GameBoard.enableActions();
       }
     }
@@ -1091,6 +1087,7 @@ const GameMain = (() => {
     getPlayers,
     getCurrentPlayer,
     getPlayerIndex,
+    getCurrentTurn,
     winning,
   };
 })();
@@ -1101,7 +1098,6 @@ GameBoard.update(GameMain.getGrid(), -1);
 
 
 /* IMPORTANT: MOVE EVENT LISTENERS TO FUNCTIONS */
-
 // Color Options on Game Board
 const colorOptionsBtnsContainer = document.getElementById('options-colors');
 const colorOptionsBtns = colorOptionsBtnsContainer.getElementsByTagName('button');
